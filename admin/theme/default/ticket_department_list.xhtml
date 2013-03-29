@@ -1,0 +1,46 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a href="" class="current" tal:attributes="href url/ticket_department">Ticket Departments</a>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<div class="container-fluid" phptal:debug="">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="widget-box">
+						<div class="widget-title">
+							<span class="icon"><i class="icon-th">&#160;</i></span> 
+							<h5>Ticket Departments</h5>
+							<a class="btn btn-info btn-mini" tal:attributes="href url/ticket_department_create">Create</a>
+						</div>
+						<div class="widget-content nopadding">
+							<table class="table table-bordered data-table">
+								<thead>
+									<tr>
+										<th style="width:50px;">ID</th>
+										<th>Name</th>
+										<th>Email</th>
+										<th>CC</th>
+										<th>BCC</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="gradeX" tal:condition="php: count(ticket_department)" tal:repeat="ticket_department ticket_department">
+										<td><a tal:attributes="href ticket_department/url_ticket_department_edit" tal:content="ticket_department/ticket_department_id"></a></td>
+										<td><a tal:attributes="href ticket_department/url_ticket_department_edit" tal:content="ticket_department/name"></a></td>
+										<td tal:content="ticket_department/email" />
+										<td tal:content="ticket_department/cc" />
+										<td tal:content="ticket_department/bcc" />
+									</tr>
+									<tr class="gradeX" tal:condition="php: !count(ticket_department)">
+										<td colspan="5">No ticket departments exist</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

@@ -1,0 +1,58 @@
+<tal:block metal:define-macro="account_list">
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th"></i></span> 
+						<h5 tal:condition="exists: client_id">Client Accounts</h5>
+						<h5 tal:condition="exists: staff_id">Staff Members</h5>
+						<a tal:condition="exists: client_id" href="{url_client_create}" class="btn btn-info btn-mini">Create</a>
+						<a tal:condition="exists: staff_id " href="{url_staff_create}" class="btn btn-info btn-mini">Create</a>
+					</div>
+					<div class="widget-content nopadding">
+						<table class="table table-bordered data-table">
+							<thead>
+								<tr tal:condition="exists: staff_id">
+									<th style="width:50px;">ID</th>
+									<th>Company</th>
+									<th>Created</th>
+									<th>Last Login</th>
+								</tr>
+								<tr tal:condition="exists: staff_id">
+									<th style="width:50px;">ID</th>
+									<th>Email</th>
+									<th>Name</th>
+									<th>Last Login</th>
+									<th>Manager</th>
+								</tr>
+							</thead>
+							<tbody>
+tal:condition="exists: client_id"
+{clients}
+tal:condition="exists: staff_id"
+{staff}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</tal:block>
+
+<tal:block metal:define-macro="account_list_row">
+	<tr tal:condition="exists: client_id" class="gradeX">
+		<td><a href="{url_client_manage}">{client_id}</a></td>
+		<td><a href="{url_client_manage}">{company}</a></td>
+		<td>{created}</td>
+		<td>{last_login}</td>
+	</tr>
+	<tr tal:condition="exists: staff_id" class="gradeX">
+		<td><a href="{url_staff_edit}">{staff_id}</a></td>
+		<td><a href="{url_staff_edit}">{email}</a></td>
+		<td><a href="{url_staff_edit}">{name}</a></td>
+		<td>{last_login}</td>
+		<td>{manager}</td>
+	</tr>
+</tal:block>

@@ -1,0 +1,22 @@
+#!/usr/bin/php
+<?php
+//boot up to openlss
+require(__DIR__.'/boot.php');
+
+use \Vidcache\Admin\File;
+use \Vidcache\Admin\Node;
+
+//this script will cleanup unused files and remove them from the cluster
+//	its like emptying the recycle bin
+dolog('Beginning file cleanup');
+getLock(2);
+foreach(File::findUnused() as $file){
+	try {
+		dolog('Removing file: '.$file['file_id'].' - '.$file['chksum']);
+		File::delete($file['file_id']);
+	} catch(Exception $e){
+		dolog('Failed to remove file: '.$file['file_id']. ' - '.$e->getMessage(),LOG_WARN);
+	}
+}
+dolog('File cleanup complete');
+stepLock();

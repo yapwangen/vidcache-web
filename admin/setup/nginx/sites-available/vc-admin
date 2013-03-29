@@ -1,0 +1,21 @@
+server {
+
+	client_max_body_size 0;
+
+	listen 8082;
+	server_name admin.*;
+
+	root ROOTPATH;
+
+	location / {
+		index index.php;
+	}
+
+	location ~ \.php {
+		fastcgi_read_timeout 600;
+		fastcgi_pass unix:/var/run/vc-admin-fpm.sock;
+		fastcgi_param SCRIPT_NAME $document_root$fastcgi_script_name;
+		include fastcgi_params;
+	}
+
+}

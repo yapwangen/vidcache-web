@@ -1,0 +1,51 @@
+#!/usr/bin/php
+<?php
+require(__DIR__.'/boot.php');
+
+use \Vidcache\VC;
+
+//register stream wrapper;
+VC::register();
+
+define('NET_BUFFER_SIZE',1024*1024);
+
+$opts = getopt('vD',array('verbose','debug'));
+if(mda_get($opts,'D') !== false && mda_get($opts,'debug') !== false)
+	define('LOG_QUIET',true);
+$args = array();
+foreach($argv as $arg){ if(substr($arg,0,1) !== '-') $args[] = $arg; }
+if(count($args) != 3) throw new Exception('Provide a src and dest');
+$src = $args[1];
+$dst = $args[2];
+$src_local = !(strpos($src,VC::getPrefix()) === 0);
+$dst_local = !(strpos($dst,VC::getPrefix()) === 0);
+if($src_local && !is_readable($src))
+	throw new Exception('Source file is unreadable');
+if($dst_local && touch($dst) && !is_writable($dst))
+	throw new Exception('Destination file is unwritable');
+
+//setup source handle
+$fdi = fopen($src,'r');
+if(!is_resource($fdi))
+	throw new Exception('Source file could not be opened');
+stream_set_write_buffer($fdi,NET_BUFFER_SIZE); //stream_set_read_buffer() doesn't seem to work at all
+
+//setup dest handle
+$fdo = fopen($dst,'w');
+if(!is_resource($fdo))
+	throw new Exception('Destination file could not be opened');
+stream_set_write_buffer($fdo,NET_BUFFER_SIZE);
+
+while(!feof($fdi))
+	fwrite($fdo,fread($fdi,NET_BUFFER_SIZE));
+//stream_copy_to_stream($fdi,$fdo);
+
+//close handles
+fclose($fdo);
+fclose($fdi);
+
+//do final output
+if(!$dst_local && $src_local)
+	$dst .= sha1_file($src);
+if(array_key_exists('v',$opts) || array_key_exists('verbose',$opts))
+	printf("%s -> %s\n",$src,$dst);

@@ -1,0 +1,74 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a href="" class="current" tal:attributes="href url/files">Files</a>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="widget-box">
+						<div class="widget-title">
+							<span class="icon"><i class="icon-th">&#160;</i></span> 
+							<h5>Files</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<form class="form-horizontal" method="post" tal:attributes="action url_current">
+								<div class="dataTables_wrapper">
+									<table class="table table-bordered data-table">
+										<thead>
+											<tr>
+												<th width="10px"></th>
+												<th width="15px"></th>
+												<th>Checksum</th>
+												<th width="15%">Type</th>
+												<th width="10%">Size</th>
+												<th width="15%">Hits</th>
+												<th width="15%">Bandwidth (MTD)</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="gradeX" tal:condition="php: count(files)" tal:repeat="file files">
+												<td><input type="checkbox" name="file[]" tal:attributes="value file/file_id" /></td>
+												<td><span class="icon"><i class="icon-file">&#160;</i></span></td>
+												<td tal:content="file/chksum" />
+												<td tal:content="file/mime_type" />
+												<td>${php:format_bytes(file['size'])}</td>
+												<td>${file/hits} (${file/hits_mtd})</td>
+												<td>${php:format_bytes(file['bandwidth'])} (${php:format_bytes(file['bandwidth_mtd'])})</td>
+											</tr>
+											<tr class="gradeX" tal:condition="php: !count(files)">
+												<td colspan="4">No files exist</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="ui-widget-header">&#160;</div>
+								</div>
+								<div class="widget-content nopadding">
+									<div class="control-group">
+										<label class="control-label">Confirm Deletion :</label>
+										<div class="controls">
+											<input type="checkbox" name="confirm_delete" value="true" />
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">Action :</label>
+										<div class="controls">
+											<select name="action">
+												<option value="">--Select Action--</option>
+												<option value="delete">Delete</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">Go</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

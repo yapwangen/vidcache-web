@@ -1,0 +1,45 @@
+#!/usr/bin/php
+<?php
+//boot up to openlss
+require(__DIR__.'/boot.php');
+
+use \LSS\Config;
+use \Vidcache\Server as VidcacheServer;
+use \Vidcache\Admin\Node;
+
+//figure out discovery zone
+$discovery_zone = 'register.'.ltrim(Config::getMerged('server','dns_zone'),'.');
+
+dolog('Starting cluster wide node discovery');
+getLock(0);
+dolog('Using DNS Zone: '.$discovery_zone);
+
+//loop through nodes and discover files
+$zone = dns_get_record($discovery_zone,DNS_A);
+$vc = VidcacheServer::load();
+foreach($zone as $record){
+	dolog('Discovering node at: '.$record['ip']);
+	//obtain data from the node
+	try {
+		$vc->setNode($record['ip']);
+		$data = array_shift($vc->discover());
+	} catch(Exception $e){
+		dolog('Failed to discover node: '.$e->getMessage(),LOG_WARN);
+		continue;
+	}
+	//parse response
+	if(!is_array($data) || !isset($data['hostname'])){
+		dolog('No valid response given by: '.$record['ip'],LOG_WARN);
+		continue;
+	}
+	unset($data['last_registered']);
+	//check if we already know about this node
+	$rv = Node::fetchByHost($data['hostname'],$data['address']);
+	//create or update
+	if(!$rv) Node::create($data);
+	else Node::update($rv['node_id'],$data);
+	dolog('Node '.$data['hostname'].' discovered successfully');
+}
+dolog('Node discovery complete');
+stepLock();
+exit;

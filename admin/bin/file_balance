@@ -1,0 +1,58 @@
+#!/usr/bin/php
+<?php
+//boot up to openlss
+require(__DIR__.'/boot.php');
+
+use \Vidcache\Admin\File;
+use \Vidcache\Admin\Node;
+use \Vidcache\Server as VidcacheServer;
+
+dolog('Starting cluster wide file balancing');
+getLock(3);
+
+//$vc = VidcacheServer::load();
+$files = File::fetchAll();
+foreach($files as &$file){
+	$file_id = $file['file_id'];
+	dolog('Counting for file: '.$file_id);
+	if(!array_key_exists('data_copies_actual',$file)) $file['data_copies_actual'] = 0;
+	if(!array_key_exists('cache_copies_actual',$file)) $file['cache_copies_actual'] = 0;
+	$clones = File::fetchAllClones($file_id);
+	if(!is_array($clones)) $clones = array();
+	dolog('| file '.$file['chksum'].' has '.count($clones).' clones with '.$file['data_copies_req'].' requested');
+	$dc =& $file['data_copies_actual'];
+	$cc =& $file['cache_copies_actual'];
+	foreach($clones as &$clone) if((int)($clone['is_cache']) === 0) $dc++; else $cc++;
+	$data_delta = $file['data_copies_req'] - $file['data_copies_actual'];
+	dolog('| file '.$file['chksum'].' needs '.$data_delta.' clones');
+	if($data_delta > 0){
+		$vc = VidcacheServer::load();
+		try {
+			$vc->selectRandomNode(true);
+			$vc->selectNodeByChksum($file['chksum'],true);
+		} catch(Exception $e){
+			dolog('| file '.$file['chksum'].' needs clones but we no longer have the data on any available node',LOG_WARN);
+			echo $e.PHP_EOL;
+			continue;
+		}
+		try {
+			$dest = $vc->selectNodeForReplicate($file['chksum']);
+			if(!$dest){
+				dolog('| file '.$file['chksum'].' needs clones but we have nowhere to put them',LOG_WARN);
+				continue;
+			} else
+				$vc->fileReplicate($file['chksum'],0,$dest);
+		} catch(Exception $e){
+			dolog('| file '.$file['chksum'].' replication failed',LOG_ERROR);
+			echo $e.PHP_EOL;
+			continue;
+		}
+		dolog('| file '.$file['chksum'].' clone created');
+	} else
+	if($data_delta < 0){
+		dolog('| file '.$file['chksum'].' clone deleted');
+	}
+}
+//debug_dump($files);
+dolog('File balancing complete');
+clearLock();

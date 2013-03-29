@@ -1,0 +1,109 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a href="" class="tip-bottom" tal:attributes="href url_client_manage">Client #${client_id}</a>
+		<a tal:attributes="href url_form" class="current">Manage API</a>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<tal:block metal:use-macro="client.xhtml/header" />
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="widget-box">
+						<div class="widget-title"> <span class="icon">&#160;<i class="icon-folder-open"></i> </span>
+							<h5>API Details</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<form method="post" class="form-horizontal" tal:attributes="action url_form">
+								<input type="hidden" tal:attributes="name form_action" value="true" />
+								<input type="hidden" name="client_id" tal:condition="exists: client_id" tal:attributes="value client_id" />
+								<div class="control-group">
+									<label class="control-label">Host :</label>
+									<div class="controls">
+										<span tal:content="host" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Port :</label>
+									<div class="controls">
+										<span tal:content="port" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Scheme :</label>
+									<div class="controls">
+										<span tal:content="scheme" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Client ID :</label>
+									<div class="controls">
+										<span tal:content="client_id" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">API Key :</label>
+									<div class="controls">
+										<span tal:content="api_key" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Crypt Key :</label>
+									<div class="controls">
+										<span tal:content="crypt_key" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Crypt IV :</label>
+									<div class="controls">
+										<span tal:content="crypt_iv" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Confirm Generation :</label>
+									<div class="controls">
+										<input type="checkbox" name="confirm" value="true" />
+										<span>Will invalidate any existing keys (will not invalidate existing sessions)</span>
+									</div>
+								</div>
+								<div class="form-actions">
+									<button type="submit" class="btn btn-success" tal:content="button_label"></button>
+								</div>
+							</form>
+						</div>
+						<div class="widget-title"> <span class="icon">&#160;<i class="icon-folder-globe"></i> </span>
+							<h5>Active Sessions</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<table class="table table-bordered data-table">
+								<thead>
+									<tr>
+										<th>Token</th>
+										<th>Host</th>
+										<th>Requests</th>
+										<th>Last Request</th>
+										<th>Created</th>
+										<th>Expires</th>
+									</tr>
+								</thead>
+								<tbody>
+								<tr tal:condition="php:count(sessions)" tal:repeat="row sessions">
+									<td tal:content="row/token" />
+									<td tal:content="row/remote_addr" />
+									<td tal:content="row/request_count" />
+									<td>${php:age(row['last_request'])} ago</td>
+									<td>${php:age(row['created'])} ago</td>
+									<td>in ${php:future_age(row['expires'])}</td>
+								</tr>
+								<tr tal:condition="php:!count(sessions)">
+									<td colspan="6">No API sessions exist</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

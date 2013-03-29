@@ -1,0 +1,33 @@
+#!/usr/bin/php
+<?php
+//this script will remove all needed DNS 'A' records
+//	requires the following arguments
+//	--host -- Hostname
+//	--ip   -- IP Address
+
+//boot up to openlss
+require(__DIR__.'/boot.php');
+
+use \LSS\PDNS;
+
+$opts = getopt('',array('host:','ip:'));
+
+if(!mda_get($opts,'host')){
+	dolog('host not specified',LOG_ERROR);
+	exit;
+}
+if(!mda_get($opts,'ip')){
+	dolog('IP not specified',LOG_ERROR);
+	exit;
+}
+//get domain section of hostname
+$fqdncrumbs = explode('.',$opts['host']);
+array_shift($fqdncrumbs);
+$domain = '.'.implode('.',$fqdncrumbs);
+unset($fqdncrumbs);
+//generate all the records
+$hosts = array($opts['host']);
+foreach(array('download','embed','lookup','register','static','stream') as $role)
+	$hosts[] = $role.$domain;
+foreach($hosts as $host)
+	PDNS::delete($host,$opts['ip']);

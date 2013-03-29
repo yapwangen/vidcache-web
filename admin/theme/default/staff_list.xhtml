@@ -1,0 +1,46 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a href="" class="current" tal:attributes="href url/staff">Staff</a>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="widget-box">
+						<div class="widget-title">
+							<span class="icon"><i class="icon-th">&#160;</i></span> 
+							<h5>Staff Accounts</h5>
+							<a class="btn btn-info btn-mini" tal:attributes="href url/staff_create">Create</a>
+						</div>
+						<div class="widget-content nopadding">
+							<table class="table table-bordered data-table">
+								<thead>
+									<tr>
+										<th style="width:50px;">ID</th>
+										<th>Email</th>
+										<th>Name</th>
+										<th>Last Login</th>
+										<th>Manager</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="gradeX" tal:condition="php: count(staff)" tal:repeat="row staff">
+										<td><a tal:attributes="href row/url_edit" tal:content="row/staff_id" /></td>
+										<td><a tal:attributes="href row/url_edit" tal:content="row/email" /></td>
+										<td><a tal:attributes="href row/url_edit" tal:content="row/name" /></td>
+										<td tal:content="row/last_login">{last_login}</td>
+										<td tal:content="row/manager">{manager}</td>
+									</tr>
+									<tr class="gradeX" tal:condition="php: !count(staff)">
+										<td colspan="4">No staff accounts exist</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

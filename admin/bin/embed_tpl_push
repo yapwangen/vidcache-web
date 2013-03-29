@@ -1,0 +1,19 @@
+#!/usr/bin/php
+<?php
+require('boot.php');
+
+use \Vidcache\Admin\Client\EmbedTpl;
+use \Vidcache\Admin\Node;
+
+dolog('Beginning to push embed templates');
+//this script pushes embed templates to all nodes
+$nodes = Node::fetchAll();
+//look templates and push
+foreach(EmbedTpl::fetchAll() as $tpl){
+	foreach($nodes as $node){
+		$rv = EmbedTpl::pushTpl($node,$tpl);
+		if(!$rv)
+			dolog('Failed to push template: '.$tpl['handle'].' - '.$rv,LOG_WARN);	
+	}
+}
+dolog('Embed Template push complete');

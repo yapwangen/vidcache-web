@@ -1,0 +1,130 @@
+#!/usr/bin/php
+<?php
+//boot up to openlss
+require(__DIR__.'/boot.php');
+
+use \LSS\Config;
+use \Vidcache\Admin\File;
+use \Vidcache\Admin\Node;
+use \Vidcache\Server as VidcacheServer;
+
+dolog('Starting cluster wide file discovery');
+getLock(1);
+
+//loop through nodes and discover files
+$block_size = Config::get('server','file_discover_block_size');
+$counts = array();
+$vc = VidcacheServer::load();
+$runtime = time();
+foreach(Node::fetchAll() as $node){
+	dolog('Discovering files on node: '.$node['hostname']);
+	$vc->setNode($node['hostname'],$node['port']);
+	$node_id = $node['node_id'];
+	//get file count
+	try {
+		$file_count = $vc->fileCount();
+		$file_count = $file_count['file_count'];
+	} catch(Exception $e){
+		dolog('Could not retrieve file count info: '.$e->getMessage(),LOG_WARN);
+		continue;
+	}
+	//continue now if file count is 0
+	if($file_count == 0) continue;
+	//otherwise figure out how many blocks to hit with
+	if($file_count < $block_size) $blocks = 1;
+	else $blocks = floor(($file_count / $block_size));
+	dolog('File count: '.$file_count);
+
+	//start looping through blocks
+	dolog('Starting to discover files in '.$blocks.' block(s) of '.$block_size);
+	for($i=0;$i<$blocks;$i++){
+		//build url and retrieve
+		try {
+			$files = array_shift($vc->fileFetchAll(($i * $block_size),$block_size));
+		} catch(Exception $e){
+			dolog('Failed to retrieve files: '.$e->getMessage(),LOG_WARN);
+			continue;
+		}
+
+		//continue to next block if there are no files
+		if(!is_array($files) || !count($files))
+			continue;
+
+		//fix for count of one
+		if(!isset($files[0]['chksum'])){
+			$tmp = $files; $files = array(0=>$tmp); unset($tmp);
+		}
+
+		//loop through files
+		foreach($files as $file){
+			//setup params from file record
+			$params = array(
+				 'chksum'		=> $file['chksum']
+				,'mime_type'	=> $file['mime_type']
+				,'size'			=> $file['size']
+				,'stream_rate'	=> $file['stream_rate']
+				,'download_rate'=> $file['download_rate']
+				,'created'		=> $file['created']
+			);
+			$is_cache = mda_get($file,'is_cache') ? 1 : 0;
+
+			//check if file exists in db
+			$finfo = File::fetchByChksum($file['chksum']);
+			//create the file
+			if(!$finfo){
+				//create the file record
+				$file_id = File::create($params);
+				$finfo = File::fetchByChksum($file['chksum']);
+			}
+			$file_id = mda_get($finfo,'file_id');
+			//setup counts if they dont exist
+			if(!isset($counts[$file_id]['data'])) $counts[$file_id]['data'] = 0;
+			if(!isset($counts[$file_id]['cache'])) $counts[$file_id]['cache'] = 0;
+			//inc copy counts and store clone
+			if($is_cache)
+				$counts[$file_id]['cache'] += 1;
+			else
+				$counts[$file_id]['data'] += 1;
+			$clone_params = array(
+				 'node_id'	=> $node_id
+				,'file_id'	=> $file_id
+				,'is_cache'	=> $is_cache
+				,'updated'	=> $runtime
+			);
+			$clone = File::fetchClone($file_id,$node_id);
+			if(!$clone){
+				//create the file_clones record
+				File::createClone($clone_params);
+				$clone = File::fetchClone($file_id,$node_id);
+			} else  {
+				$clone_params = array_merge($clone,$clone_params);
+				//unset stuff we don't want or need to include for an update
+				unset($clone_params['file_id']);
+				unset($clone_params['node_id']);
+				File::updateClone($file_id,$node_id,$clone_params);
+			}
+
+			//update record
+			File::update($file_id,$params);
+		}
+		dolog('Completed discovering block '.$i);
+	}
+	dolog('Discovering files on '.$node['hostname'].' complete');
+}
+
+dolog('Upating copy counts');
+$ucount = 0;
+foreach($counts as $file_id => $v){
+	if(!is_array($v) || !isset($v['cache']) || !isset($v['data']))
+		continue;
+	File::update($file_id,array('data_copies'=>$v['data'],'cache_copies'=>$v['cache']));
+	$ucount++;
+}
+dolog('Updated '.$ucount.' file copy counts');
+
+dolog('Expiring old clones');
+$count = File::expireClones($runtime);
+dolog('Expired '.$count.' old records');
+
+dolog('File discovery complete');
+stepLock();

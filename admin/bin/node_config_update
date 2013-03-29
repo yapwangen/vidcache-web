@@ -1,0 +1,34 @@
+#!/usr/bin/php
+<?php
+//boot up to openlss
+require(__DIR__.'/boot.php');
+
+use \Vidcache\Admin\Node;
+use \Vidcache\Server as VidcacheServer;
+
+dolog('Starting cluster wide node configuration update');
+
+//get config and make a checksum
+$file = ROOT.'/server/config.remote.php';
+if(!file_exists($file)){
+	dolog('Configuration file to send doesnt exist: '.$file,LOG_ERROR);
+	exit;
+}
+
+$config_content = file_get_contents($file);
+
+//loop through nodes and update config
+$vc = VidcacheServer::load();
+foreach(Node::fetchAll() as $node){
+	dolog('Updating node: '.$node['hostname']);
+	$vc->setNode($node['hostname']);
+	try {
+		$vc->configUpdate($config_content);
+	} catch(Exception $e){
+		dolog('Failed to update node config: '.$e->getMessage,LOG_WARN);
+		continue;
+	}
+	dolog('Node '.$node['hostname'].' configuration updated successfully');
+}
+
+dolog('Node configuration update complete');

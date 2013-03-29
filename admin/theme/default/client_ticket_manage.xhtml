@@ -1,0 +1,49 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a tal:attributes="href url/home" title="Home" class="tip-bottom">&#160;<i class="icon-home"></i> Home</a>
+		<a tal:attributes="href url/client" class="tip-bottom">Clients</a>
+		<a tal:attributes="href url_client_manage" class="tip-bottom">#${client_id}</a>
+		<a tal:attributes="href url_client_ticket_manage" class="current">Ticket #${ticket_id}</a>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<tal:block metal:use-macro="client.xhtml/header" />
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="widget-box">
+						<div class="widget-title"> <span class="icon"><i class="icon-cog">&#160;</i> </span>
+							<h5>Ticket ${ticket_id} Details</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<form class="form-horizontal" method="post" tal:attributes="action url_client_ticket_manage">
+							<input type="hidden" name="update_ticket_details" value="true" />
+								<div class="control-group">
+									<label class="control-label">Subject :</label>
+									<div class="controls">
+										<input type="text" class="span6" name="subject" tal:attributes="value subject" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Assigned To :</label>
+									<div class="controls" tal:content="structure staff_drop" />
+								</div>
+								<div class="control-group">
+									<label class="control-label">Status :</label>
+									<div class="controls" tal:content="structure ticket_status_drop" />
+								</div>
+								<div class="control-group">
+									<label class="control-label">Department :</label>
+									<div class="controls" tal:content="structure ticket_department_drop" />
+								</div>
+								<div class="form-actions">
+									<button type="submit" class="btn btn-success">Update</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<tal:block tal:content="structure module_display" />
+	</tal:block>
+</tal:block>

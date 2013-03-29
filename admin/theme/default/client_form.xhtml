@@ -1,0 +1,92 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a tal:attributes="href url/client" class="tip-bottom">Clients</a>
+		<tal:block tal:condition="exists: edit">
+			<a tal:attributes="href url_client_manage"  class="tip-bottom">#${client_id}</a>
+			<a tal:attributes="href url_client_edit" class="current">Edit</a>
+		</tal:block>
+		<tal:block tal:condition="exists: create">
+			<a tal:attributes="href url/client_create" class="current">Create</a>
+		</tal:block>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<tal:block metal:use-macro="client.xhtml/header" />
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="widget-box">
+						<div class="widget-title"> <span class="icon">&#160;<i class="icon-edit"></i> </span>
+							<h5>Client Details</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<form method="post" class="form-horizontal" tal:attributes="action url_form">
+								<input type="hidden" tal:attributes="name form_action" value="true" />
+								<input type="hidden" name="client_id" tal:condition="exists: client_id" tal:attributes="value client_id" />
+								<div class="control-group">
+									<label class="control-label">Company :</label>
+									<div class="controls">
+										<input type="text" class="span11" placeholder="Company" name="company" tal:attributes="value company" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">First Name :</label>
+									<div class="controls">
+										<input type="text" class="span11" placeholder="First Name" name="first_name" tal:attributes="value first_name" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Last Name :</label>
+									<div class="controls">
+										<input type="text" class="span11" placeholder="Last Name" name="last_name" tal:attributes="value last_name" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Email :</label>
+									<div class="controls">
+										<input type="text" class="span11" placeholder="Email" name="email" tal:attributes="value email" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Password :</label>
+									<div class="controls">
+										<input type="password" class="span11" name="password" value="" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Confirm Password :</label>
+									<div class="controls">
+										<input type="password" class="span11" name="confirm_password" value="" />
+									</div>
+								</div>
+								<div class="form-actions">
+									<button type="submit" class="btn btn-success" tal:content="button_label"></button>
+								</div>
+							</form>
+						</div>
+						<tal:block condition="exists: edit">
+							<div class="widget-title"> <span class="icon"> <i class="icon-trash">&#160;</i> </span>
+								<h5>Delete Client Account</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form method="post" class="form-horizontal" tal:attributes="action url_client_edit">
+									<input type="hidden" name="delete" value="true" />
+									<input type="hidden" name="client_id" tal:attributes="value client_id" />
+									<div class="control-group">
+										<label class="control-label">Confirm Delete :</label>
+										<div class="controls">
+											<input type="checkbox" name="confirm_delete" value="true" /> (cannot be undone)
+										</div>
+									</div>
+									<div class="form-actions">
+										<button type="submit" class="btn btn-danger">Delete</button>
+									</div>
+								</form>
+							</div>
+						</tal:block>
+					</div>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

@@ -1,0 +1,31 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="widget-box">
+				<div class="widget-title">
+					<span class="icon"><i class="icon-list">&#160;</i></span> 
+					<h5>Ticket Log</h5>
+				</div>
+				<div class="widget-content nopadding">
+					<table class="table table-bordered data-table">
+						<thead>
+							<tr>
+								<th width="200">Date</th>
+								<th style="text-align: left;">Message</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="gradeX" tal:condition="php: count(log)" tal:repeat="row log">
+								<td tal:content="row/date" />
+								<td style="text-align: left;" tal:content="row/message" />
+							</tr>
+							<tr class="gradeX" tal:condition="php: !count(log)">
+								<td colspan="4">No log entries exist</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
