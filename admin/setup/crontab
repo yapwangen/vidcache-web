@@ -1,7 +1,0 @@
-* * * * *		USER cd PREFIX/admin; bin/node_discover > /dev/null 2>> PREFIX/log/cron_err
-* * * * *		USER cd PREFIX/admin; bin/file_discover > /dev/null 2>> PREFIX/log/cron_err
-* * * * *		USER cd PREFIX/admin; bin/file_balance > /dev/null 2>> PREFIX/log/cron_err
-*/5 * * * *		USER cd PREFIX/admin; bin/file_collect_stats > /dev/null 2>> PREFIX/log/cron_err
-* * * * *		USER cd PREFIX/admin; bin/file_cleanup > /dev/null 2>> PREFIX/log/cron_err
-* * * * *		USER cd PREFIX/admin; bin/embed_push > /dev/null	2>> PREFIX/log/cron_err
-* * * * *		USER cd PREFIX/admin; bin/embed_tpl_push > /dev/null 2>> PREFIX/log/cron_err
