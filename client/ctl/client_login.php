@@ -9,7 +9,7 @@ if(post('login')){
 	try {
 		//get the client member
 		$client = Client::fetchByEmail(post('email'));
-		if(!$client) throw new Exception('Client member doesnt exist');
+		if(!$client) throw new Exception('Client doesnt exist');
 		//check password
 		if(!bcrypt_check(post('password'),$client['password']))
 			throw new Exception('Password is invalid');
@@ -17,7 +17,7 @@ if(post('login')){
 		$token = Session::tokenCreate($client['client_id'],server('REMOTE_ADDR'),server('HTTP_USER_AGENT'));
 		Session::startSession($token);
 		//update last login
-		Client::updateLastLogin($client['client_id']);
+		Client::updateLastLogin($client);
 		//redirect request
 		if(session('login_referrer') && strpos(session('login_referrer'),Url::login()) === false)
 			redirect(session('login_referrer'));

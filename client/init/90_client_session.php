@@ -12,7 +12,7 @@ if(session_id() != ''){
 		if(Session::checkLogin()){
 			//register session
 			$token = Session::fetchByToken(Session::getTokenFromSession());
-			$session = array_merge(Client::fetch($token['client_id']),$token);
+			$session = array_merge(Client::fetchByContact($token['contact_id']),$token);
 			Session::storeSession($session);
 			unset($session,$token);
 			//set tpl globals (if Tpl is available)
@@ -26,6 +26,7 @@ if(session_id() != ''){
 			if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
 		}
 	} catch(Exception $e){
+		echo "<pre>$e</pre>"; exit;
 		Session::tokenDestroy(Session::getTokenFromSession());
 		Session::destroySession();
 		if(server('REQUEST_URI') != Url::login()) redirect(Url::login());

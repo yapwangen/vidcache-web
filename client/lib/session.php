@@ -9,7 +9,7 @@ abstract class Session extends \LSS\Session {
 		self::$session_name		= 'client_token';
 		self::$session_table	= 'client_session';
 		self::$user_primary_key	= 'contact_id';
-		self::$urls_nologin		= array(Url::login(),Url::signup());
+		self::$urls_nologin		= array(Url::login());
 	}
 }
 
