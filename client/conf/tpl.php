@@ -1,4 +1,10 @@
 <?php
 //tpl
-$config['tpl']['path'] = 'tpl/client';
-$config['tpl']['theme_path'] = 'theme/client';
+$config['theme']['name'] = 'default';
+$config['theme']['tidy'] = array(
+	 'indent'				=>	true
+	,'output-xml'			=>	true
+	,'numeric-entities'		=>	true
+	,'preserve-entities'	=>	true
+	,'wrap'					=>	200
+);

@@ -1,25 +1,18 @@
 <?php
 use \LSS\Tpl;
 use \LSS\Url;
-use \Vidcache\Admin\Client;
-use \Vidcache\Admin\Session as ClientSession;
-
-page_header_client();
-ClientSession::requireLogin();
+use \Vidcache\Admin\Staff;
+use \Vidcache\Admin\Staff\Session as StaffSession;
 
 if(post('edit')){
 	try {
-		Client::update(post('account_id'),post());
-		alert('client profile updated successfully',true,true);
+		Staff::update(post('staff_id'),post());
+		alert('staff profile updated successfully',true,true);
 		redirect(Url::profile());
 	} catch (Exception $e){
 		alert($e->getMessage(),false);
 	}
 }
 
-$params = Client::fetchByContact(ClientSession::get('contact_id'));
-$params = array_merge($params,$_POST);
-Tpl::_get()->parse('client','profile',$params);
-
-page_footer_client();
-output(Tpl::_get()->output());
+$params = array_merge(Staff::fetch(StaffSession::get('staff_id')),post());
+Tpl::_get()->output('staff_profile',$params);

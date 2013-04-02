@@ -1,0 +1,111 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a href="" class="tip-bottom" tal:attributes="href url_client_manage">Client #${client_id}</a>
+		<a tal:attributes="href url_form" class="current">Edit File</a>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<tal:block metal:use-macro="client.xhtml/header" />
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="widget-box">
+						<div class="widget-title"> <span class="icon">&#160;<i class="icon-folder-open"></i> </span>
+							<h5>File Details</h5>
+						</div>
+						<div class="widget-content">
+							<tal:block tal:condition="exists: path" tal:repeat="row path">
+								<span class="icon">
+									<i tal:condition="not: repeat/row/end" class="icon-folder-close">&#160;</i>
+									<i tal:condition="repeat/row/end" class="icon-folder-open">&#160;</i>
+								</span>
+								<a tal:attributes="href row/url" tal:content="row/name" />
+								<tal:block tal:condition="not: repeat/row/end"> -> </tal:block>
+							</tal:block>
+						</div>
+						<div class="widget-content nopadding">
+							<form method="post" class="form-horizontal" tal:attributes="action url_form">
+								<input type="hidden" tal:attributes="name form_action" value="true" />
+								<input type="hidden" name="client_file_id" tal:condition="exists: client_file_id" tal:attributes="value client_file_id" />
+								<div class="control-group">
+								<label class="control-label">Name :</label>
+								<div class="controls">
+										<input type="text" class="span11" placeholder="Name" name="name" tal:attributes="value name" />
+									</div>
+								</div>
+								<div class="form-actions">
+									<button type="submit" class="btn btn-success" tal:content="button_label"></button>
+								</div>
+							</form>
+						</div>
+						<div class="widget-content nopadding">
+							<form class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">Name :</label>
+									<div class="controls" tal:content="name" />
+								</div>
+								<div class="control-group">
+									<label class="control-label">Checksum :</label>
+									<div class="controls" tal:content="chksum" />
+								</div>
+								<div class="control-group">
+									<label class="control-label">Type :</label>
+									<div class="controls" tal:content="mime_type"></div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Size :</label>
+									<div class="controls" tal:content="size"></div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Data Copies :</label>
+									<div class="controls" tal:content="data_copies"></div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Cache Copies :</label>
+									<div class="controls" tal:content="cache_copies"></div>
+								</div>
+							</form>
+						</div>
+						<div class="widget-title"> <span class="icon">&#160;<i class="icon-folder-open"></i> </span>
+							<h5>URLs</h5>
+						</div>
+						<div class="widget-content">
+							<form class="form-horizontal">
+								<tal:block tal:repeat="url urls">
+									<div class="control-group" style="clear:both; padding-bottom: 25px;">
+											<div><a target="_blank" tal:attributes="href url/url" tal:content="url/name" /></div>
+											<div><code class="span11" style="overflow: auto;" tal:content="url/url" /></div>
+									</div>
+								</tal:block>
+							</form>
+						</div>
+						<div class="widget-title"> <span class="icon">&#160;<i class="icon-folder-open"></i> </span>
+							<h5>Embed Objects</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<table class="table table-bordered data-table">
+								<thead>
+									<tr>
+										<th>Handle</th>
+										<th>Template</th>
+										<th>URL</th>
+									</tr>
+								</thead>
+								<tbody>
+								<tr tal:condition="php:count(embed)" tal:repeat="row embed">
+									<td><a tal:attributes="href row/url_manage" tal:content="row/handle"></a></td>
+									<td tal:content="row/tpl_name"></td>
+									<td><a tal:attributes="href row/url" tal:content="row/url" /></td>
+								</tr>
+								<tr tal:condition="php:!count(embed)">
+									<td colspan="5">No embed objects exist</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

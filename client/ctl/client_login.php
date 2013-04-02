@@ -1,29 +1,23 @@
 <?php
+use \LSS\Config;
 use \LSS\Tpl;
 use \LSS\Url;
-use \Vidcache\Admin\Client;
-use \Vidcache\Admin\Session as ClientSession;
+use \Vidcache\Admin\Staff;
+use \Vidcache\Admin\Staff\Session;
 
 if(post('login')){
 	try {
-		//get the client
-		$client = Client::fetchByEmail(post('email'),false);
-		if($client === false) throw new \Exception('Client doesnt exist');
-		//check active flags
-		if(!mda_get($client,'contact_is_active'))
-			throw new \Exception('Contact is disabled');
-		if(mda_get($client,'__is_client') && (!mda_get($client,'is_active')))
-			throw new \Exception('Client is disabled');
-		//check password(s)
-		Client::auth(post('password'),$client);
-		if(mda_get($client,'__auth') === 0)
-			throw new \Exception('Password is invalid');
+		//get the staff member
+		$staff = Staff::fetchByEmail(post('email'));
+		if(!$staff) throw new Exception('Staff member doesnt exist');
+		//check password
+		if(!bcrypt_check(post('password'),$staff['password']))
+			throw new Exception('Password is invalid');
 		//generate token and setup session
-		$token = ClientSession::tokenCreate(mda_get($client,'contact_id'),server('REMOTE_ADDR'),server('HTTP_USER_AGENT'));
-		ClientSession::startSession($token);
-		ClientSession::storeSession($client);
+		$token = Session::tokenCreate($staff['staff_id'],server('REMOTE_ADDR'),server('HTTP_USER_AGENT'));
+		Session::startSession($token);
 		//update last login
-		Client::updateLastLogin($client);
+		Staff::updateLastLogin($staff['staff_id']);
 		//redirect request
 		if(session('login_referrer') && strpos(session('login_referrer'),Url::login()) === false)
 			redirect(session('login_referrer'));
@@ -34,6 +28,8 @@ if(post('login')){
 }
 
 session('login_referrer',server('HTTP_REFERER'));
-Tpl::_get()->parse('login','page');
-page_load_css_client();
-output(Tpl::_get()->output());
+
+$params = array();
+$params['url_login'] = Url::login();
+$params['page_title'] = Config::get('site_name').' - Admin Login';
+Tpl::_get()->output('staff_login',$params);

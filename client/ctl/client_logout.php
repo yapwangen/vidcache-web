@@ -1,7 +1,7 @@
 <?php
 use \LSS\Url;
-use \Vidcache\Admin\Session as ClientSession;
+use \Vidcache\Admin\Staff\Session as StaffSession;
 
-ClientSession::tokenDestroy(ClientSession::getTokenFromSession());
-ClientSession::destroySession();
+StaffSession::tokenDestroy(StaffSession::getTokenFromSession());
+StaffSession::destroySession();
 redirect(Url::login());
