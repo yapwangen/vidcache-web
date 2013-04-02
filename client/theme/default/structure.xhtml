@@ -32,8 +32,7 @@
 						<!--top-Header-navbar-->
 						<div id="user-nav" class="navbar navbar-inverse">
 							<ul class="nav">
-								<li><a tal:attributes="href url/profile"><i class="icon icon-user">&#160;</i> <span class="text" tal:content="global/staff_name | default">Administrator</span></a></li>
-								<li><a tal:attributes="href url/staff"><i class="icon icon-cog">&#160;</i> <span class="text">Staff</span></a></li>
+								<li><a tal:attributes="href url/profile"><i class="icon icon-user">&#160;</i> <span class="text" tal:content="global/client_name | default">Administrator</span></a></li>
 								<li><a tal:attributes="href url/logout"><i class="icon icon-share-alt">&#160;</i> <span class="text">Logout</span></a></li>
 							</ul>
 						</div>
@@ -44,21 +43,8 @@
 						<!--side bar-->
 						<div id="sidebar">
 							<ul>
-								<li class="active"><a tal:attributes="href url/home"><i class="icon icon-home">&#160;</i> <span>Dashboard</span></a></li>
-								<li>
-									<a tal:attributes="href url/client"><i class="icon icon-signal">&#160;</i> <span>Clients</span></a>
-									<ul>
-										<li><a tal:attributes="href url/client">Browse</a></li>
-										<li><a tal:attributes="href url/client_create">Create</a></li>
-									</ul>
-								</li>
-								<li>
-									<a tal:attributes="href url/staff"><i class="icon icon-wrench">&#160;</i> <span>System</span></a>
-									<ul>
-										<li><a tal:attributes="href url/staff">Staff</a></li>
-										<li><a tal:attributes="href url/ticket_department">Ticket Departments</a></li>
-									</ul>
-								</li>
+								<li class="active"><a tal:attributes="href url/client"><i class="icon icon-home">&#160;</i> <span>Dashboard</span></a></li>
+								<li><a tal:attributes="href url_client_file_list"><i class="icon icon-file">&#160;</i> <span>Files</span></a></li>
 							</ul>
 						</div>
 						<!--end nav bar-->

@@ -3,8 +3,9 @@ use \LSS\Tpl;
 use \LSS\Url;
 use \Vidcache\Admin\Client;
 use \Vidcache\Admin\Client\Contact;
+use \Vidcache\Client\Session;
 
-$params = Client::fetch(get('client_id'));
+$params = Client::fetch(Session::get('client_id'));
 
 //account contacts
 $params['url_client_edit'] = Url::client_edit(get('client_id'));

@@ -26,7 +26,7 @@ if(session_id() != ''){
 			if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
 		}
 	} catch(Exception $e){
-		echo "<pre>$e</pre>"; exit;
+		alert($e->getMessage(),false,true);
 		Session::tokenDestroy(Session::getTokenFromSession());
 		Session::destroySession();
 		if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
