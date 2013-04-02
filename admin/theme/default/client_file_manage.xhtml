@@ -94,7 +94,6 @@
 								<tbody>
 								<tr tal:condition="php:count(embed)" tal:repeat="row embed">
 									<td><a tal:attributes="href row/url_manage" tal:content="row/handle"></a></td>
-									
 									<td tal:content="row/tpl_name"></td>
 									<td><a tal:attributes="href row/url" tal:content="row/url" /></td>
 								</tr>
