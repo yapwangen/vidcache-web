@@ -1,6 +1,8 @@
 <?php
 namespace Vidcache\Client;
 
+use \LSS\Url;
+
 abstract class Session extends \LSS\Session {
 	public static function init(){
 		self::$config_name		= 'client';

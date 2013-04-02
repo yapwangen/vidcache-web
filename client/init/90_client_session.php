@@ -3,8 +3,8 @@
 use \LSS\Config;
 use \LSS\Tpl;
 use \LSS\Url;
-use \Vidcache\Admin\Staff;
-use \Vidcache\Admin\Staff\Session;
+use \Vidcache\Admin\Client;
+use \Vidcache\Client\Session;
 
 if(session_id() != ''){
 	//check for session
@@ -12,14 +12,14 @@ if(session_id() != ''){
 		if(Session::checkLogin()){
 			//register session
 			$token = Session::fetchByToken(Session::getTokenFromSession());
-			$session = array_merge(Staff::fetch($token['staff_id']),$token);
+			$session = array_merge(Client::fetch($token['client_id']),$token);
 			Session::storeSession($session);
 			unset($session,$token);
 			//set tpl globals (if Tpl is available)
 			if(is_callable(array('\LSS\Tpl','_get'))){
 				Tpl::_get()->set(array(
-					 'staff_name'		=>	Session::get('name')
-					,'staff_lastlogin'	=>	date(Config::get('date','general_format'),Session::get('last_login'))
+					 'client_name'		=>	Session::get('name')
+					,'client_lastlogin'	=>	date(Config::get('date','general_format'),Session::get('last_login'))
 				));
 			}
 		} else {
@@ -28,6 +28,6 @@ if(session_id() != ''){
 	} catch(Exception $e){
 		Session::tokenDestroy(Session::getTokenFromSession());
 		Session::destroySession();
-		redirect(Url::login());
+		if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
 	}
 }

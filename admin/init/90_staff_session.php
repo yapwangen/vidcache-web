@@ -28,6 +28,6 @@ if(session_id() != ''){
 	} catch(Exception $e){
 		Session::tokenDestroy(Session::getTokenFromSession());
 		Session::destroySession();
-		redirect(Url::login());
+		if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
 	}
 }
