@@ -15,11 +15,8 @@ abstract class Client extends Account implements AccountInterface {
 			,'client_company'			=> $company
 			,'url_client_ticket_create'	=> Url::client_ticket_create($client_id)
 			,'url_client_ticket_list'	=> Url::client_ticket_list($client_id)
-			,'url_client_file_list'		=> Url::client_file_list($client_id)
-			,'url_client_embed_tpl_list'=> Url::client_embed_tpl_list($client_id)
 			,'url_client_manage'		=> Url::client_manage($client_id)
 			,'url_client_edit'			=> Url::client_edit($client_id)
-			,'url_client_api'			=> Url::client_api($client_id)
 		);
 	}
 
