@@ -38,9 +38,12 @@
 		,"openlss/lib-account":			"dev-master"
 		,"openlss/lib-config":			"dev-master"
 		,"openlss/lib-db":				"dev-master"
+		,"openlss/lib-router":			"dev-master"
+		,"openlss/lib-session":			"dev-master"
+		,"openlss/lib-tpl":				"dev-master"
 		,"openlss/lib-validate":		"dev-master"
 	}
 	,"autoload": {
-		"classmap": ["lib/"]
+		"classmap": ["lib/","admin/lib/","client/lib/"]
 	}
 }
