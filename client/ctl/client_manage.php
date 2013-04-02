@@ -18,6 +18,4 @@ foreach(Contact::fetchAllByAccount(get('client_id'),Client::$accounts_table) as 
 	$params['contacts'][] = $contact;
 }
 
-$params = array_merge($params,Client::adminHeaderParams($params['client_id'],$params['company']));
-
 Tpl::_get()->output('client_manage',$params);
