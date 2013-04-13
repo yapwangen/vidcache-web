@@ -1,6 +1,7 @@
 <?php
 namespace Vidcache\Client;
 
+use \Exception;
 use \LSS\Config;
 use \LSS\Tpl;
 use \LSS\Url;
@@ -30,6 +31,9 @@ abstract class Session extends \LSS\Session {
 					if(is_callable(array('\LSS\Tpl','_get'))){
 						Tpl::_get()->set(array(
 							 'client_name'		=>	Session::get('name')
+							,'client_loggedin'	=>	true
+							,'client_free'		=>	true
+							,'client_premium'	=>	false
 							,'client_lastlogin'	=>	date(Config::get('account','date.general_format'),Session::get('last_login'))
 						));
 					}

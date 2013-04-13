@@ -1,11 +1,9 @@
 <?php
 
 //enable default theme elements
+$this->setStub('header');
 $this->setStub('body');
-$this->setStub('navbar');
-$this->setStub('sidebar');
 $this->setStub('footer');
-$this->setStub('client_actions');
 //load default css
 $this->addCss($this->uri.'/css/style.css');
 //load default css
