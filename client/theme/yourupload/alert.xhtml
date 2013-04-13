@@ -1,11 +1,11 @@
 <tal:block metal:define-macro="alert">
 	<div class="alert alert-success" tal:condition="exists: global/alert/success" tal:repeat="success global/alert/success">
-		<strong>Success!</strong> ${success/msg}
+		<strong>Success!</strong> <span tal:content="structure success/msg" />
 	</div>
 	<div class="alert alert-error" tal:condition="exists: global/alert/error" tal:repeat="error global/alert/error">
-		<strong>Error!</strong> ${error/msg}
+		<strong>Error!</strong> <span tal:content="structure error/msg" />
 	</div>
 	<div class="alert" tal:condition="exists: global/alert/warning" tal:repeat="warning global/alert/warning">
-		<strong>Warning!</strong> ${warning/msg}
+		<strong>Warning!</strong> <span tal:content="structure warning/msg" />
 	</div>
 </tal:block>

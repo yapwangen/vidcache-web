@@ -7,10 +7,11 @@
 			<div class="u">
 				<h2>Sign Up to Share Your Files</h2>
 				<div>
+					<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
 					<form tal:attributes="action url/register;" method="post">
 					<input type="hidden" name="register" value="true" />
 					<div class="formRow">
-						<label>Email</label> <input name="email" type="text" />
+						<label>Email</label> <input name="email" type="text" tal:attributes="value email" />
 					</div>
 					<div class="formRow">
 						<label>Password</label> <input autocomplete="off" name="password" type="password" />

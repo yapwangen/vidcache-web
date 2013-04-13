@@ -383,7 +383,7 @@ img {
 	padding-left: 110px;
 }
 
-.alert {
+.alert, .alert-success {
 	background: #86E889; 
 	color: #135115; 
 	border: 1px solid #135115; 
@@ -393,7 +393,7 @@ img {
 	margin: 5px;
 }
 
-.failure {
+.alert-error {
 	background: #EAB4B4;
 	color: #5E0606;
 	border-color: #5E0606;
