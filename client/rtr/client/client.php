@@ -8,5 +8,6 @@ Router::_get()->register('client',array(
 	,'login'			=>	'/ctl/client_login.php'
 	,'logout'			=>	'/ctl/client_logout.php'
 	,'register'			=>	'/ctl/client_register.php'
-	,Router::DEF		=>	'/ctl/client_list.php'
+	,'home'				=>	'/ctl/client_home.php'
+	,Router::DEF		=>	'/ctl/client_home.php'
 ));

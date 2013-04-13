@@ -3,6 +3,11 @@ use \LSS\Tpl;
 use \LSS\Url;
 use \LSS\Validate;
 use \Vidcache\Admin\Client;
+use \Vidcache\Client\Session;
+
+//bounce to homepage when logged in
+if(Session::isLoggedIn())
+	redirect(Url::home());
 
 if(post('register')){
 	try {

@@ -1,0 +1,73 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="content">
+		<div class="lm">
+			<div class="nn">
+				<div class="nlogo">
+					<a tal:attributes="href url/home"><img src="images/logo.png" width="255" height="90" /></a>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="cc">
+				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
+				<h2>Welcome to your account!</h2>
+				<h3>Upload New Files</h3>
+				<form method="post" tal:attributes="action url/client_home" enctype="multipart/form-data">
+				<div>
+					<div class="formRow">
+						<input type="file" id="file" name="file[]" multiple="multiple" /><br />
+					</div>
+					<div class="formRow" style="text-align: center">
+						<input type="submit" name="upload" value="Upload" />
+					</div>
+				</div>
+				</form>
+				<h2>Usage</h2>
+				<div><small>Videos do not count towards your limits.</small></div>
+				<h3>Files Used <small>(<a tal:attributes="url/premium_signup">Upgrade!</a>)</small></h3>
+				<div class="usage_bar">
+					<div class="usage_inner">
+						<div style="width: ${files_pct}%" class="used"></div>
+						${files_used} / ${tier_files}
+					</div>
+				</div>
+				<h3>Space Used <small>(<a tal:attributes="url/premium_signup">Upgrade!</a>)</small></h3>
+				<div class="usage_bar">
+					<div class="usage_inner">
+						<div style="width: ${space_pct}%" class="used"></div>
+						${space_used} / ${tier_space}
+					</div>
+				</div>
+				<h3>Transfer Used <small>(<a tal:attributes="url/premium_signup">Upgrade!</a>)</small></h3>
+				<div class="usage_bar">
+					<div class="usage_inner">
+						<div style="width: ${transfer_pct}%" class="used"></div>
+						${transfer_used} / ${tier_transfer} <small>(resets on ${next_month} 1st)</small>
+					</div>
+				</div>
+				<h2>Recent Files <small>(<a tal:attributes="url/client_file_list">View All</a>)</small></h2>
+				<table class="tbl">
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Size</th>
+					<th>Views</th>
+					<th>Downloads (MTD)</th>
+					<th>Uploaded</th>
+					<th>Options</th>
+				</tr>
+				<tal:block tal:repeat="file files">
+					<tr>
+						<td><a tal:attributes="href file/uri; id file/idi" tal:content="file/name" /></td>
+						<td tal:content="file/type" />
+						<td tal:content="file/size" />
+						<td tal:content="file/views" />
+						<td>${file/downloads} (${file/downloads_current})</td>
+						<td>${file/uploaded} ago</td>
+						<td><a tal:attributes="href file/url_manage">Manage</a></td>
+					</tr>
+				</tal:block>
+				</table>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>
