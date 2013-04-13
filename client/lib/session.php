@@ -30,7 +30,8 @@ abstract class Session extends \LSS\Session {
 					//set tpl globals (if Tpl is available)
 					if(is_callable(array('\LSS\Tpl','_get'))){
 						Tpl::_get()->set(array(
-							 'client_name'		=>	Session::get('name')
+							 'client'			=>	Session::get()
+							,'client_name'		=>	Session::get('name')
 							,'client_loggedin'	=>	true
 							,'client_free'		=>	true
 							,'client_premium'	=>	false

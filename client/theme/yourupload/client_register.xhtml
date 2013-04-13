@@ -1,0 +1,29 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="body">
+		<div class="logo">
+			<a tal:attributes="href url/home"><img src="images/logo.png" /></a>
+		</div>
+		<div class="n">
+			<div class="u">
+				<h2>Sign Up to Share Your Files</h2>
+				<div>
+					<form tal:attributes="action url/register;" method="post">
+					<input type="hidden" name="register" value="true" />
+					<div class="formRow">
+						<label>Email</label> <input name="email" type="text" />
+					</div>
+					<div class="formRow">
+						<label>Password</label> <input autocomplete="off" name="password" type="password" />
+					</div>
+					<div class="formRow">
+						<label>Confirm Password</label> <input autocomplete="off" name="confirm_password" type="password" />
+					</div>
+					<div class="formSubmit">
+						<input type="submit" name="upload" class="button btn1" value="Sign Up" />
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

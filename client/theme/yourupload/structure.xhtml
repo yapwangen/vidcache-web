@@ -31,30 +31,33 @@
 				<div class="head">
 					<div class="righthead">
 						<tal:block tal:condition="exists:global/client_loggedin">
-							<span class="email">{email}</span> <a href="{url_logout}">Logout</a>
+							<span class="email" tal:content="global/client/email" /> <a tal:attributes="href url/logout">Logout</a>
 						</tal:block>
-						<tal:block tal:condition="not: exists:global/client_logged_in">
+						<tal:block tal:condition="not: exists: global/client_loggedin">
 							<a tal:attributes="href url/login">Login</a>
 						</tal:block>
 					</div>
 					<div class="lefthead">
-						<tal:block tal:condition="not: exists:gloabl/client_loggedin">
+						<tal:block tal:condition="not: exists:global/client_loggedin">
 							<a tal:attributes="href url/register">Sign Up</a>
+							<a tal:attributes="href url/news">News</a>
+							<a href="${url/page}beta">Beta</a>
+							<a href="${url/page}features">Features</a>
+							<a href="${url/page}about">About Us</a>
 						</tal:block>
-						<a tal:attributes="href url/news">News</a>
-						<a href="${url/page}beta">Beta</a>
-						<a href="${url/page}features">Features</a>
-						<a href="${url/page}about">About Us</a>
 						<tal:block tal:condition="exists:global/client_loggedin">
-							
-							<tal:block tal:condition="exists:global/client_free; global/client_free">
-								<a tal:attributes="href url/user_home">My ${global/site_name}</a>
-								<a tal:attributes="href url/user_files">My Files</a>
-								<a tal:attributes="href url/file_import">Remote File</a>
-								<a tal:attributes="href url/file_import_video">Video Import</a>
+							<tal:block tal:condition="global/client_free">
+								<a tal:attributes="href url/home">My ${global/site_name}</a>
+								<a tal:attributes="href url/client_file_list">My Files</a>
+								<a tal:attributes="href url/client_file_list">Remote File</a>
+								<a tal:attributes="href url/client_file_list">Video Import</a>
+								<a tal:attributes="href url/news">News</a>
+								<a href="${url/page}beta">Beta</a>
+								<a href="${url/page}features">Features</a>
+								<a href="${url/page}about">About Us</a>
 								<a tal:attributes="href url/premium_signup" style="font-weight: bold;">Go Premium!</a>
 							</tal:block>
-							<tal:block tal:condition="exists:global/client_premium; global/client_premium">
+							<tal:block tal:condition="global/client_premium">
 								<a tal:attributes="href url/user_home">My ${global/site_name}</a>
 								<a tal:attributes="href url/user_files">My Files</a>
 								<a tal:attributes="href url/file_import">Remote File</a>
