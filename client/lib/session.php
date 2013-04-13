@@ -17,7 +17,7 @@ abstract class Session extends \LSS\Session {
 		self::$urls_nologin		= array(Url::login());
 	}
 	
-	public static function requireLogin(){
+	public static function setup(){
 		if(session_id() != ''){
 			//check for session
 			try {
@@ -38,7 +38,8 @@ abstract class Session extends \LSS\Session {
 						));
 					}
 				} else {
-					if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
+					//allow guests
+					//if(server('REQUEST_URI') != Url::login()) redirect(Url::login());
 				}
 			} catch(Exception $e){
 				alert($e->getMessage(),false,true);
