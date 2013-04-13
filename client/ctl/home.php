@@ -1,2 +1,6 @@
 <?php
-include(ROOT_GROUP.'/ctl/client_manage.php');
+use \LSS\Tpl;
+
+$params = array();
+
+Tpl::_get()->output('home',$params);

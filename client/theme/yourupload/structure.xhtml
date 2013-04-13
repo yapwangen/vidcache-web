@@ -11,7 +11,7 @@
 			<meta name="keywords" content="upload,video,image,sound,hosting,free,storage" />
 			<meta name="description" content="YourUpload is a free file hosting service for all types of files and supports streaming playback of media files with unlimited emebds." />
 			<meta http-equiv="cache-control" content="no-cache" />
-			<link rel="icon" type="image/png" href="images/yu-favicon.png">
+			<link rel="icon" type="image/png" href="images/yu-favicon.png" />
 
 			<!--Theme Related Files-->
 			<!--CSS Files-->
@@ -44,19 +44,17 @@
 						<a tal:attributes="href url/news">News</a>
 						<a href="${url/page}beta">Beta</a>
 						<a href="${url/page}features">Features</a>
-						<a href="${url_page}about">About Us</a>
+						<a href="${url/page}about">About Us</a>
 						<tal:block tal:condition="exists:global/client_loggedin">
 							
-							<tal:block tal:condition="exists:global/client_free" tal:condition="global/client_free">
+							<tal:block tal:condition="exists:global/client_free; global/client_free">
 								<a tal:attributes="href url/user_home">My ${global/site_name}</a>
 								<a tal:attributes="href url/user_files">My Files</a>
 								<a tal:attributes="href url/file_import">Remote File</a>
 								<a tal:attributes="href url/file_import_video">Video Import</a>
-								
-								
-								<a tal:attributes="href url/premium_signup"style="font-weight: bold;">Go Premium!</a>
+								<a tal:attributes="href url/premium_signup" style="font-weight: bold;">Go Premium!</a>
 							</tal:block>
-							<tal:block tal:condition="exists:global/client_premium" tal:condition="global/client_premium">
+							<tal:block tal:condition="exists:global/client_premium; global/client_premium">
 								<a tal:attributes="href url/user_home">My ${global/site_name}</a>
 								<a tal:attributes="href url/user_files">My Files</a>
 								<a tal:attributes="href url/file_import">Remote File</a>
@@ -95,11 +93,11 @@
 						<a href="${url/page}terms-of-service">Terms of Service</a>
 						<a href="${url/page}privacy-policy">Privacy Policy</a> 
 						<a href="${url/page}dmca-policy">DMCA Policy</a>
-						<a tal:attributes="href url/contact">Contact</a>
+						<a tal:attributes="href url/contact_us">Contact</a>
 						<span style="margin-left: 40px;">Free file hosting service for: videos, sound files, text, images and more</span>
 					</div>
 					<div class="ogr">
-						<span class="copyright">&copy; ${global/cur_year} ${global/site_name} <small>Version: ${global/lss_version} | ${global/script_stats}</small></span>
+						<span class="copyright">${global/copyright} <small>Version: ${global/lss_version} | ${global/stats}</small></span>
 						<script id="_wausbi">var _wau = _wau || []; _wau.push(["small", "pa2k9dsbs4kh", "sbi"]);(function() { var s=document.createElement("script"); s.async=true; s.src="http://widgets.amung.us/small.js";document.getElementsByTagName("head")[0].appendChild(s);})();</script>
 					</div>
 				</div>
