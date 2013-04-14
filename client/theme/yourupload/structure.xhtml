@@ -47,10 +47,7 @@
 						</tal:block>
 						<tal:block tal:condition="exists:global/client_loggedin">
 							<tal:block tal:condition="global/client_free">
-								<a tal:attributes="href url/home">My ${global/site_name}</a>
-								<a tal:attributes="href url/client_file_list">My Files</a>
-								<a tal:attributes="href url/client_file_list">Remote File</a>
-								<a tal:attributes="href url/client_file_list">Video Import</a>
+								<a tal:attributes="href url/client_home">My Files</a>
 								<a tal:attributes="href url/news">News</a>
 								<a href="${url/page}beta">Beta</a>
 								<a href="${url/page}features">Features</a>

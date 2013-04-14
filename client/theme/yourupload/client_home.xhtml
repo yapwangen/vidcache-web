@@ -11,7 +11,7 @@
 				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
 				<h2>Welcome to your account!</h2>
 				<h3>Upload New Files</h3>
-				<form method="post" tal:attributes="action url/client_home" enctype="multipart/form-data">
+				<form method="get" tal:attributes="action url_action_upload" enctype="multipart/form-data">
 				<div>
 					<div class="formRow">
 						<input type="file" id="file" name="file[]" multiple="multiple" /><br />
@@ -21,52 +21,61 @@
 					</div>
 				</div>
 				</form>
-				<h2>Usage</h2>
-				<div><small>Videos do not count towards your limits.</small></div>
-				<h3>Files Used <small>(<a tal:attributes="url/premium_signup">Upgrade!</a>)</small></h3>
-				<div class="usage_bar">
-					<div class="usage_inner">
-						<div style="width: ${files_pct}%" class="used"></div>
-						${files_used} / ${tier_files}
-					</div>
+				<h2>Files</h2>
+				<div>
+					<strong>Path:</strong>
+					<tal:block tal:repeat="row path">
+						<a tal:attributes="href row/url">
+							<i tal:condition="not: repeat/row/end" tal:attributes="class string:icon icon-folder-close">&#160;</i>
+							<i tal:condition="repeat/row/end" tal:attributes="class string:icon icon-folder-open">&#160;</i>
+							<span tal:content="row/name" />
+						</a> /
+					</tal:block>
 				</div>
-				<h3>Space Used <small>(<a tal:attributes="url/premium_signup">Upgrade!</a>)</small></h3>
-				<div class="usage_bar">
-					<div class="usage_inner">
-						<div style="width: ${space_pct}%" class="used"></div>
-						${space_used} / ${tier_space}
-					</div>
-				</div>
-				<h3>Transfer Used <small>(<a tal:attributes="url/premium_signup">Upgrade!</a>)</small></h3>
-				<div class="usage_bar">
-					<div class="usage_inner">
-						<div style="width: ${transfer_pct}%" class="used"></div>
-						${transfer_used} / ${tier_transfer} <small>(resets on ${next_month} 1st)</small>
-					</div>
-				</div>
-				<h2>Recent Files <small>(<a tal:attributes="url/client_file_list">View All</a>)</small></h2>
 				<table class="tbl">
 				<tr>
+					<th width="5px"></th>
 					<th>Name</th>
 					<th>Type</th>
 					<th>Size</th>
-					<th>Views</th>
-					<th>Downloads (MTD)</th>
-					<th>Uploaded</th>
-					<th>Options</th>
+					<th>Hits</th>
+					<th>Transfer (MTD)</th>
+					<th>Created</th>
 				</tr>
+				<tal:block tal:repeat="folder folders">
+					<tr>
+						<td><i class="icon icon-folder-close">&#160;</i></td>
+						<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
+						<td>Folder</td>
+						<td />
+						<td />
+						<td />
+						<td>${folder/created} ago</td>
+					</tr>
+				</tal:block>
 				<tal:block tal:repeat="file files">
 					<tr>
-						<td><a tal:attributes="href file/uri; id file/idi" tal:content="file/name" /></td>
-						<td tal:content="file/type" />
+						<td><i class="icon icon-file">&#160;</i></td>
+						<td><a tal:attributes="href file/url" tal:content="file/name" /></td>
+						<td tal:content="file/mime_type" />
 						<td tal:content="file/size" />
-						<td tal:content="file/views" />
-						<td>${file/downloads} (${file/downloads_current})</td>
-						<td>${file/uploaded} ago</td>
-						<td><a tal:attributes="href file/url_manage">Manage</a></td>
+						<td tal:content="file/hits" />
+						<td>${file/bandwidth} (${file/bandwidth_mtd})</td>
+						<td>${file/created} ago</td>
 					</tr>
 				</tal:block>
 				</table>
+				<br />
+				<h3>Create Folder</h3>
+				<form method="post" tal:attributes="action url_action">
+				<div>
+					<div class="formRow">
+						<input type="text" id="folder" name="folder" />
+						<input type="submit" name="create" value="Create" />
+						<br />
+					</div>
+				</div>
+				</form>
 			</div>
 		</div>
 	</tal:block>

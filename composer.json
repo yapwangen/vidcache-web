@@ -36,6 +36,7 @@
 		,"openlss/func-mda":			"dev-master"
 		,"openlss/func-mda-glob":		"dev-master"
 		,"openlss/func-mimetype":		"dev-master"
+		,"openlss/func-time":			"dev-master"
 		,"openlss/lib-account":			"dev-master"
 		,"openlss/lib-config":			"dev-master"
 		,"openlss/lib-db":				"dev-master"
