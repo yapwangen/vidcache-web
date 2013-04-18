@@ -219,14 +219,14 @@ abstract class FS {
 	public static function URLsByFile($file){
 		$arr = array(
 			//cluster urls
-			 'url_static'		=>	self::buildClusterURL($file['file_chksum'],'static')
-			,'url_embed'		=>	self::buildClusterURL($file['embed_handle'],'embed')
-			,'url_download'		=>	self::buildClusterURL($file['file_chksum'],'download')
-			,'url_stream'		=>	self::buildClusterURL($file['file_chksum'],'stream')
+			 'url_server_static'		=>	self::buildClusterURL($file['file_chksum'],'static')
+			,'url_server_embed'			=>	self::buildClusterURL($file['embed_handle'],'embed')
+			,'url_server_download'		=>	self::buildClusterURL($file['file_chksum'],'download')
+			,'url_server_stream'		=>	self::buildClusterURL($file['file_chksum'],'stream')
 		);
 		//add action url
 		$action = self::actionType($file['mime_type']);
-		$arr['url_'.$action] = 'http://'.$_SERVER['HTTP_HOST'].Url::client_file_view($action,$file['handle']);
+		$arr['url_'.$action] = $arr['url_file'] = 'http://'.$_SERVER['HTTP_HOST'].Url::client_file_view($action,$file['handle']);
 		return $arr;
 	}
 

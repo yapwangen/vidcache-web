@@ -14,7 +14,7 @@
 			<div class="clear"></div>
 			<div class="cc">
 				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
-				<h2>File: ${file/name}</h2>
+				<h2>File: <a tal:attributes="href file/url_file" tal:content="file/name" /></h2>
 				<div class="file">
 					<div style="float: right;">
 						<!-- YourUpload - VAB - Game Advertising Online -->
@@ -24,14 +24,16 @@
 					<tal:block tal:condition="php: fire == 'watch'">
 						<fieldset>
 							<legend>View File</legend>
-							<iframe tal:attributes="src file/url_embed" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+							<div style="text-align: center;">
+								<iframe tal:attributes="src file/url_server_embed" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+							</div>
 						</fieldset>
 						<fieldset>
 							<legend>Sharing</legend>
 							<div>
 								<label>Embed Code</label>
 								<code>
-									&lt;iframe src=&quot;${file/url_embed}&width=720&height=480&quot; style=&quot;width:720px;height:480px;border:0;margin:0;padding:0;&quot;&gt;&lt;/iframe&gt;
+									&lt;iframe src=&quot;${file/url_server_embed}&width=720&height=480&quot; style=&quot;width:720px;height:480px;border:0;margin:0;padding:0;&quot;&gt;&lt;/iframe&gt;
 								</code>
 							</div>
 							<div>
@@ -51,14 +53,14 @@
 					<tal:block tal:condition="php: fire == 'listen'">
 						<fieldset>
 							<legend>View File</legend>
-							<iframe tal:attributes="src file/url_embed" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+							<iframe tal:attributes="src file/url_server_embed" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
 						</fieldset>
 						<fieldset>
 							<legend>Sharing</legend>
 							<div>
 								<label>Embed Code</label>
 								<code>
-									&lt;iframe src=&quot;${file/url_embed}&width=550&height=370&quot; style=&quot;width:720px;height:480px;border:0;margin:0;padding:0;overflow:hidden;&quot;&gt;&lt;/iframe&gt;
+									&lt;iframe src=&quot;${file/url_server_embed}&width=550&height=370&quot; style=&quot;width:720px;height:480px;border:0;margin:0;padding:0;overflow:hidden;&quot;&gt;&lt;/iframe&gt;
 								</code>
 							</div>
 							<div>
@@ -78,7 +80,7 @@
 					<tal:block tal:condition="php: fire == 'view'">
 						<fieldset>
 							<legend>View File</legend>
-								<iframe tal:attributes="src file/url_static" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+								<iframe tal:attributes="src file/url_server_static" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
 						</fieldset>
 						<fieldset>
 							<legend>Sharing</legend>
@@ -127,7 +129,7 @@
 						<legend>File Options</legend>
 						<div>
 							<label>Download</label>
-							<a tal:attributes="href file/url_download" tal:content="file/name" />
+							<a tal:attributes="href file/url_server_download" tal:content="file/name" />
 						</div>
 					</fieldset>
 				</div>

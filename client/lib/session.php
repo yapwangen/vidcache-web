@@ -11,7 +11,7 @@ use \Vidcache\Client\Session;
 abstract class Session extends \LSS\Session {
 	public static function init(){
 		self::$config_name		= 'client';
-		self::$session_name		= 'client_token';
+		self::$session_name		= Config::get('client','cookie_prefix').'_session';
 		self::$session_table	= 'client_session';
 		self::$user_primary_key	= 'contact_id';
 		self::$urls_nologin		= array(Url::login());
@@ -21,6 +21,11 @@ abstract class Session extends \LSS\Session {
 		if(session_id() != ''){
 			//check for session
 			try {
+				//check for a cookie and start a session
+				if(isset($_COOKIE[self::$session_name])){
+					session(self::$session_name,$_COOKIE[self::$session_name]);
+				}
+				//try to see if we can get verified
 				if(Session::checkLogin()){
 					//register session
 					$token = Session::fetchByToken(Session::getTokenFromSession());

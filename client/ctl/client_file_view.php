@@ -18,6 +18,8 @@ FS::updateCache($vc);
 
 $params = array();
 $params['file'] = $file = FS::fetchFileByHandle($handle);
+if(!$file)
+	throw new Exception('File not found');
 //merge in urls
 $params['file'] = array_merge($params['file'],FS::URLsByFile($file));
 //set the action type
