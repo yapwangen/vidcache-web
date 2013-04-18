@@ -1,8 +1,8 @@
 <?php
-$config['site_name'] = 'Vidcache Web';
+$config['site_name'] = 'Videokoo';
 $config['log']['file'] = ROOT.'/log/vc-web';
-$config['theme']['name'] = 'yourupload';
-$config['contact']['email'] = 'root@localhost';
+$config['theme']['name'] = 'videokoo';
+$config['contact']['email'] = 'contact@nullivex.com';
 
 //embed mime types
 $config['embed']['audio_types'] = array(
