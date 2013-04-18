@@ -97,24 +97,20 @@
 					</div>
 					<div class="ogr">
 						<span class="copyright">${global/copyright} <small>Version: ${global/lss_version} | ${global/stats}</small></span>
-						<script id="_wausbi">var _wau = _wau || []; _wau.push(["small", "pa2k9dsbs4kh", "sbi"]);(function() { var s=document.createElement("script"); s.async=true; s.src="http://widgets.amung.us/small.js";document.getElementsByTagName("head")[0].appendChild(s);})();</script>
+						<!--whos.amung.us-->
+						<script id="_wau6d8">
+							var _wau = _wau || []; _wau.push(["small", "k30nqffzzj3d", "6d8"]);
+							(function() {var s=document.createElement("script"); s.async=true;
+							s.src="http://widgets.amung.us/small.js";
+							document.getElementsByTagName("head")[0].appendChild(s);
+							})();
+						</script>
+						<!--END whos.amung.us-->
 					</div>
 				</div>
 				<!--end footer-->
 			</tal:block>
 			<tal:block tal:condition="exists: global/debug" metal:use-macro="debug.xhtml/debug" />
-			<!-- Piwik --> 
-			<script type="text/javascript">
-			var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.esited.com/" : "http://stats.esited.com/");
-			document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-			</script><script type="text/javascript">
-			try {
-			var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
-			piwikTracker.trackPageView();
-			piwikTracker.enableLinkTracking();
-			} catch( err ) {}
-			</script><noscript><p><img src="http://stats.esited.com/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
-			<!-- End Piwik Tracking Code -->
 		</body>
 	</html>
 </tal:block>

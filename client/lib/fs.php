@@ -236,10 +236,10 @@ abstract class FS {
 	public static function URLsByFile($file){
 		$arr = array(
 			//cluster urls
-			 'url_server_static'		=>	self::buildClusterURL($file['file_chksum'],'static')
-			,'url_server_embed'			=>	self::buildClusterURL($file['embed_handle'],'embed')
-			,'url_server_download'		=>	self::buildClusterURL($file['file_chksum'],'download')
-			,'url_server_stream'		=>	self::buildClusterURL($file['file_chksum'],'stream')
+			 'url_server_static'		=>	self::buildClusterURL($file['file_id'],$file['file_chksum'],'static')
+			,'url_server_embed'			=>	self::buildClusterURL($file['file_id'],$file['embed_handle'],'embed')
+			,'url_server_download'		=>	self::buildClusterURL($file['file_id'],$file['file_chksum'],'download')
+			,'url_server_stream'		=>	self::buildClusterURL($file['file_id'],$file['file_chksum'],'stream')
 		);
 		//add action url
 		$action = self::actionType($file['mime_type']);
@@ -247,16 +247,23 @@ abstract class FS {
 		return $arr;
 	}
 
-	public static function buildClusterURL($uri,$service_type){
+	public static function buildClusterURL($file_id,$uri,$service_type){
 		$cluster_url  = Config::get('vidcache','server_scheme');
+		//add service type
 		if(!is_null($service_type))
-			$cluster_url .= $service_type.'.';
-		$cluster_url .= Config::get('vidcache','host');
+			$cluster_url .= $service_type;
+		else
+			$cluster_url .= 'lookup';
+		//dns zone
+		$cluster_url .= Config::get('vidcache','dns_zone');
+		//cluster http port
 		$port = Config::get('vidcache','server_port');
 		if($port != '80')
 			$cluster_url .= ':'.$port;
+		//uri
 		$cluster_url .= '/'.$uri;
-		$cluster_url .= '?client_id='.Config::get('vidcache','client_id');
+		//append client_id for tracking
+		$cluster_url .= '?client_file_id='.$file_id;
 		return $cluster_url;
 	}
 }

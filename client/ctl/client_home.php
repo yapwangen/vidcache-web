@@ -24,7 +24,15 @@ FS::updateCache($vc);
 $root_path = '/home/'.$client_id;
 $path = !is_null(get('path')) ? get('path') : '';
 
+//make sure the root path exists
+if($vc->pathExists($root_path) == 'none')
+	$vc->folderCreate($root_path,true);
+
 if(get('upload')){
+	//make sure the root path exists
+	if($vc->pathExists($root_path) == 'none')
+		mkdir(VCFS::getPrefix().$root_path,true);
+	//upload files
 	foreach($_FILES['file']['tmp_name'] as $key => $tmp_name){
 		$upload_path = $root_path.$path.'/'.$_FILES['file']['name'][$key];
 		//upload the file
@@ -38,15 +46,23 @@ if(get('upload')){
 			//videos are a bit different and need a thumbnail first
 			if(in_array($mime_type,Config::get('embed','video_types'))){
 				//create the thumbnail
-				$rv = $vc->pathGenPreview($upload_path);
-				$preview_path = $rv['preview_path'];
+				try {
+					$rv = $vc->pathGenPreview($upload_path);
+					$preview_path = $rv['preview_path'];
+				} catch(Exception $e){
+					//ignore it
+				}
 			}
 			//publish it
 			$rv = $vc->pathPublish($upload_path,$preview_path,Config::get('vidcache','embed_tpl_handle'));
-			FS::storeEmbedHandle($upload_path,$rv['embed_handle']);
+			FS::fileStoreEmbedHandle($rv['embed_handle'],$upload_path);
 		}
 	}
 	//update our local cache
+	//	we start a new instance here to workaround an xport bug with encoding types
+	//	reported here: https://github.com/openlss/lib-xport/issues/1
+	$vc = SDK::load();
+	$vc->connect(Config::get('vidcache','api_key'));
 	FS::updateCache($vc);
 	//done
 	alert('Files uploaded successfully',true,true);

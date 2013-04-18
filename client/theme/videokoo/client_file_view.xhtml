@@ -2,13 +2,8 @@
 	<tal:block metal:fill-slot="content">
 		<div class="lm">
 			<div class="nn">
-				<div style="float: right; margin-top: 10px;">
-					<!-- YourUpload - 728x90 - Game Advertising Online -->
-					<iframe  marginheight="0" marginwidth="0" scrolling="no" frameborder="0" width="728" height="90" src="http://www3.game-advertising-online.com/process/serve-f.php?section=serve&id=3575&subid=" target="_blank"></iframe>
-					<!-- END GAO 728x90 -->
-				</div>
 				<div class="nlogo" style="margin-right: 0; margin-top: 15px;">
-					<a tal:attributes="url/home"><img src="images/logo.png" width="255" height="90" /></a>
+					<a tal:attributes="url/home"><img src="images/logo.png" /></a>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -16,11 +11,6 @@
 				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
 				<h2>File: <a tal:attributes="href file/url_file" tal:content="file/name" /></h2>
 				<div class="file">
-					<div style="float: right;">
-						<!-- YourUpload - VAB - Game Advertising Online -->
-						<iframe style="background-image:url('');" ALLOWTRANSPARENCY="true" marginheight="0" marginwidth="0" scrolling="no" frameborder="0" width="160" height="600" src="http://www3.game-advertising-online.com/process/serve-f.php?section=serve&id=3598&subid=" target="_blank"></iframe>
-						<!-- END GAO VAB -->
-					</div>
 					<tal:block tal:condition="php: fire == 'watch'">
 						<fieldset>
 							<legend>View File</legend>

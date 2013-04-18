@@ -19,15 +19,8 @@ if(post('login')){
 		//update last login
 		Client::updateLastLogin($client);
 		//check if we should set a cookie
-		if(!is_null(post('remember'))){
-			setcookie(
-			 	 Config::get('client','cookie_prefix').'_session'
-				,$token
-				,time()+Config::get('client','cookie_life')
-				,Config::get('client','cookie_path')
-				,COnfig::get('client','cookie_domain')
-			);
-		}
+		if(!is_null(post('remember')))
+			Session::setCookie($token);
 		//redirect request
 		if(session('login_referrer') && strpos(session('login_referrer'),Url::login()) === false)
 			redirect(session('login_referrer'));

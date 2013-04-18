@@ -179,8 +179,6 @@ img {
 }
 .nlogo {
 	float: left;
-	width: 255px;
-	height: 90px;
 	overflow: hidden;
 	margin-right: 10px;
 }
