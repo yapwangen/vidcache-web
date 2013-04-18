@@ -54,10 +54,45 @@ if(get('upload')){
 	exit;
 }
 
-if(post('folder')){
+//create folder
+if(post('create_folder')){
 	try {
 		mkdir(VCFS::getPrefix().$root_path.$path.'/'.post('folder'));
 		alert('Folder created successfully',true,true);
+		redirect(Url::client_home_path($path));
+	} catch(Exception $e){
+		alert($e->getMessage(),false);
+	}
+}
+
+//delete files / folders
+if(post('action') == 'delete'){
+	try {
+		$files = post('file');
+		$folders = post('folder');
+		if(!is_null($files) && is_array($files) && is_null(post('confirm_file_deletion')))
+			throw new Exception('Files selected for deletion but not confirmed');
+		if(!is_null($folders) && is_array($folders) && is_null(post('confirm_folder_deletion')))
+			throw new Exception('Folders selected for deletion but not confirmed');
+		//delete files
+		if(is_array($files)){
+			foreach($files as $file_id){
+				$file = FS::fetchFileById($file_id);
+				$delete_path = $file['path'];
+				$vc->pathDelete($delete_path);
+			}
+		}
+		//delete folders
+		if(is_array($folders)){
+			foreach($folders as $folder_id){
+				$folder = FS::fetchFolderById($folder_id);
+				$delete_path = $folder['path'];
+				$vc->pathDelete($delete_path,true);
+			}
+		}
+		//update the cache
+		FS::updateCache($vc);
+		alert('File(s) and/or Folder(s) deleted successfully!',true,true);
 		redirect(Url::client_home_path($path));
 	} catch(Exception $e){
 		alert($e->getMessage(),false);

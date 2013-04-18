@@ -32,50 +32,65 @@
 						</a> /
 					</tal:block>
 				</div>
-				<table class="tbl">
-					<tr>
-						<th width="5px"></th>
-						<th width="5px"></th>
-						<th>Name</th>
-						<th>Type</th>
-						<th>Size</th>
-						<th>Hits</th>
-						<th>Transfer (MTD)</th>
-						<th>Created</th>
-					</tr>
-					<tal:block tal:repeat="folder folders">
+				<form tal:attributes="action url_action" method="post">
+					<table class="tbl">
 						<tr>
-							<td><input type="checkbox" name="folder[]" tal:attributes="folder/folder_id" /></td>
-							<td><i class="icon icon-folder-close">&#160;</i></td>
-							<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
-							<td>Folder</td>
-							<td />
-							<td />
-							<td />
-							<td>${folder/created} ago</td>
+							<th width="5px"></th>
+							<th width="5px"></th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Size</th>
+							<th>Hits</th>
+							<th>Transfer (MTD)</th>
+							<th>Created</th>
 						</tr>
-					</tal:block>
-					<tal:block tal:repeat="file files">
-						<tr>
-							<td><input type="checkbox" name="file[]" tal:attributes="file/file_id" /></td>
-							<td><i class="icon icon-file">&#160;</i></td>
-							<td><a tal:attributes="href file/url" tal:content="file/name" /></td>
-							<td tal:content="file/mime_type" />
-							<td tal:content="file/size" />
-							<td tal:content="file/hits" />
-							<td>${file/bandwidth} (${file/bandwidth_mtd})</td>
-							<td>${file/created} ago</td>
-						</tr>
-					</tal:block>
-					<tal:block tal:condition="php: !count(folders) AND !count(files)">
-						<tr>
-							<td colspan="8">No files or folders exist!</td>
-						</tr>
-					</tal:block>
-				</table>
+						<tal:block tal:repeat="folder folders">
+							<tr>
+								<td><input type="checkbox" name="folder[]" tal:attributes="value folder/folder_id" /></td>
+								<td><i class="icon icon-folder-close">&#160;</i></td>
+								<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
+								<td>Folder</td>
+								<td />
+								<td />
+								<td />
+								<td>${folder/created} ago</td>
+							</tr>
+						</tal:block>
+						<tal:block tal:repeat="file files">
+							<tr>
+								<td><input type="checkbox" name="file[]" tal:attributes="value file/file_id" /></td>
+								<td><i class="icon icon-file">&#160;</i></td>
+								<td><a tal:attributes="href file/url" tal:content="file/name" /></td>
+								<td tal:content="file/mime_type" />
+								<td tal:content="file/size" />
+								<td tal:content="file/hits" />
+								<td>${file/bandwidth} (${file/bandwidth_mtd})</td>
+								<td>${file/created} ago</td>
+							</tr>
+						</tal:block>
+						<tal:block tal:condition="php: !count(folders) AND !count(files)">
+							<tr>
+								<td colspan="8">No files or folders exist!</td>
+							</tr>
+						</tal:block>
+					</table>
+					<div style="padding: 10px 0">
+						<div style="padding: 5px;"><input type="checkbox" name="confirm_file_deletion" value="true" /> Confirm File Deletion</div>
+						<div style="padding: 5px;"><input type="checkbox" name="confirm_folder_deletion" value="true" />Confirm Folder Deletion (Recursive)</div>
+						<div style="padding: 5px;">
+							<select name="action">
+								<option value="delete">Delete Selected</option>
+							</select>
+						</div>
+						<div style="padding: 5px;">
+							<input type="submit" value="Sumit" />
+						</div>
+					</div>
+				</form>
 				<br />
 				<h3>Create Folder</h3>
 				<form method="post" tal:attributes="action url_action">
+				<input type="hidden" name="create_folder" value="true" />
 				<div>
 					<div class="formRow">
 						<input type="text" id="folder" name="folder" />

@@ -7,6 +7,23 @@ use \Vidcache\SDK;
 
 abstract class FS {
 
+	public static function fetchFolderById($folder_id){
+		return Db::_get()->fetch(
+			'SELECT * FROM `folders` WHERE `folder_id` = ?'
+			,array($folder_id)
+		);
+	}
+
+	public static function fetchFileById($file_id){
+		return Db::_get()->fetch(
+			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
+			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
+			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
+			.' WHERE f.file_id = ?'
+			,array($file_id)
+		);
+	}
+
 	public static function fetchFolderByPath($path){
 		return Db::_get()->fetch(
 			'SELECT * FROM `folders` WHERE `path` = ?'
