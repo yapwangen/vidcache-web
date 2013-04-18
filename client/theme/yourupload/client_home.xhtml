@@ -33,37 +33,45 @@
 					</tal:block>
 				</div>
 				<table class="tbl">
-				<tr>
-					<th width="5px"></th>
-					<th>Name</th>
-					<th>Type</th>
-					<th>Size</th>
-					<th>Hits</th>
-					<th>Transfer (MTD)</th>
-					<th>Created</th>
-				</tr>
-				<tal:block tal:repeat="folder folders">
 					<tr>
-						<td><i class="icon icon-folder-close">&#160;</i></td>
-						<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
-						<td>Folder</td>
-						<td />
-						<td />
-						<td />
-						<td>${folder/created} ago</td>
+						<th width="5px"></th>
+						<th width="5px"></th>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Size</th>
+						<th>Hits</th>
+						<th>Transfer (MTD)</th>
+						<th>Created</th>
 					</tr>
-				</tal:block>
-				<tal:block tal:repeat="file files">
-					<tr>
-						<td><i class="icon icon-file">&#160;</i></td>
-						<td><a tal:attributes="href file/url" tal:content="file/name" /></td>
-						<td tal:content="file/mime_type" />
-						<td tal:content="file/size" />
-						<td tal:content="file/hits" />
-						<td>${file/bandwidth} (${file/bandwidth_mtd})</td>
-						<td>${file/created} ago</td>
-					</tr>
-				</tal:block>
+					<tal:block tal:repeat="folder folders">
+						<tr>
+							<td><input type="checkbox" name="folder[]" tal:attributes="folder/folder_id" /></td>
+							<td><i class="icon icon-folder-close">&#160;</i></td>
+							<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
+							<td>Folder</td>
+							<td />
+							<td />
+							<td />
+							<td>${folder/created} ago</td>
+						</tr>
+					</tal:block>
+					<tal:block tal:repeat="file files">
+						<tr>
+							<td><input type="checkbox" name="file[]" tal:attributes="file/file_id" /></td>
+							<td><i class="icon icon-file">&#160;</i></td>
+							<td><a tal:attributes="href file/url" tal:content="file/name" /></td>
+							<td tal:content="file/mime_type" />
+							<td tal:content="file/size" />
+							<td tal:content="file/hits" />
+							<td>${file/bandwidth} (${file/bandwidth_mtd})</td>
+							<td>${file/created} ago</td>
+						</tr>
+					</tal:block>
+					<tal:block tal:condition="php: !count(folders) AND !count(files)">
+						<tr>
+							<td colspan="8">No files or folders exist!</td>
+						</tr>
+					</tal:block>
 				</table>
 				<br />
 				<h3>Create Folder</h3>

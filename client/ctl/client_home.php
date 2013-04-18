@@ -3,20 +3,26 @@ use \LSS\Config;
 use \LSS\Tpl;
 use \LSS\Url;
 use \Vidcache\Client\Session;
+use \Vidcache\Client\FS;
 use \Vidcache\SDK\VCFS;
 use \Vidcache\SDK;
 
 if(!Session::isLoggedIn())
 	redirect(Url::login());
 
+$client_id = Session::get('client_id');
+
 //setup SDK and VCFS
 VCFS::register();
 $vc = SDK::load();
 $vc->connect(Config::get('vidcache','api_key'));
 
+//check if we have a different signature cached for this client
+FS::updateCache($vc);
+
 //setup path info
-$root_path = '/home/'.Session::get('client_id');
-$path = !is_null(get('path')) ? get('path') : '/';
+$root_path = '/home/'.$client_id;
+$path = !is_null(get('path')) ? get('path') : '';
 
 if(get('upload')){
 	foreach($_FILES['file']['tmp_name'] as $key => $tmp_name)
@@ -42,15 +48,18 @@ $params['url_action_upload'] = $params['url_action'].'&upload=true';
 $params['files'] = $params['folders'] = array();
 
 $params['path'] = array();
+$params['path'][] = array('url'=>Url::client_home(),'name'=>'Root');
 $built = '';
 foreach(explode('/',ltrim($path,'/')) as $v){
+	if(empty($v)) continue;
 	$built .= '/'.$v;
 	$params['path'][] = array('url'=>Url::client_home_path($built),'name'=>$v);
 	
 }
 unset($built);
 
-$info = $vc->pathInfo($root_path.$path);
+$info['files'] = FS::fetchFilesByParent($root_path.$path);
+$info['folders'] = FS::fetchFoldersByParent($root_path.$path);
 foreach($info['files'] as $file){
 	$file['created'] = age($file['created']);
 	$file['size'] = format_bytes($file['size']);

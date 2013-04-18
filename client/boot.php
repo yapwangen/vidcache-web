@@ -6,6 +6,7 @@ require_once('lss_boot.php');
 
 //import libs
 use \LSS\Router;
+use \Vidcache\Client\URLRewrite;
 
 //start output buffers and sessions
 ob_start();
@@ -14,6 +15,11 @@ session_start();
 //load the openlss environment
 __boot();
 
+//check for a rewritten url and handle it
+$arr = URLRewrite::setup(get('uri'));
+$_GET = array_merge($_GET,$arr);
+$_REQUEST = array_merge($_GET,$arr);
+unset($arr);
 
 //router
 Router::init();
