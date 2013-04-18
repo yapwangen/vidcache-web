@@ -1,0 +1,139 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="content">
+		<div class="lm">
+			<div class="nn">
+				<div style="float: right; margin-top: 10px;">
+					<!-- YourUpload - 728x90 - Game Advertising Online -->
+					<iframe  marginheight="0" marginwidth="0" scrolling="no" frameborder="0" width="728" height="90" src="http://www3.game-advertising-online.com/process/serve-f.php?section=serve&id=3575&subid=" target="_blank"></iframe>
+					<!-- END GAO 728x90 -->
+				</div>
+				<div class="nlogo" style="margin-right: 0; margin-top: 15px;">
+					<a tal:attributes="url/home"><img src="images/logo.png" width="255" height="90" /></a>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="cc">
+				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
+				<h2>File: <a tal:attributes="href file/url_file" tal:content="file/name" /></h2>
+				<div class="file">
+					<div style="float: right;">
+						<!-- YourUpload - VAB - Game Advertising Online -->
+						<iframe style="background-image:url('');" ALLOWTRANSPARENCY="true" marginheight="0" marginwidth="0" scrolling="no" frameborder="0" width="160" height="600" src="http://www3.game-advertising-online.com/process/serve-f.php?section=serve&id=3598&subid=" target="_blank"></iframe>
+						<!-- END GAO VAB -->
+					</div>
+					<tal:block tal:condition="php: fire == 'watch'">
+						<fieldset>
+							<legend>View File</legend>
+							<div style="text-align: center;">
+								<iframe tal:attributes="src file/url_server_embed" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend>Sharing</legend>
+							<div>
+								<label>Embed Code</label>
+								<code>
+									&lt;iframe src=&quot;${file/url_server_embed}&width=720&height=480&quot; style=&quot;width:720px;height:480px;border:0;margin:0;padding:0;&quot;&gt;&lt;/iframe&gt;
+								</code>
+							</div>
+							<div>
+								<label>Link Code</label>
+								<code>
+									&lt;a href=&quot;${file/url_watch}&quot;&gt;${file/name}&lt;/a&gt;
+								</code>
+							</div>
+							<div>
+								<label>Public URL</label>
+								<code>
+									${file/url_watch}
+								</code>
+							</div>
+						</fieldset>
+					</tal:block>
+					<tal:block tal:condition="php: fire == 'listen'">
+						<fieldset>
+							<legend>View File</legend>
+							<iframe tal:attributes="src file/url_server_embed" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+						</fieldset>
+						<fieldset>
+							<legend>Sharing</legend>
+							<div>
+								<label>Embed Code</label>
+								<code>
+									&lt;iframe src=&quot;${file/url_server_embed}&width=550&height=370&quot; style=&quot;width:720px;height:480px;border:0;margin:0;padding:0;overflow:hidden;&quot;&gt;&lt;/iframe&gt;
+								</code>
+							</div>
+							<div>
+								<label>Link Code</label>
+								<code>
+									&lt;a href=&quot;${file/url_listen}&quot;&gt;${file/name}&lt;/a&gt;
+								</code>
+							</div>
+							<div>
+								<label>Shareable URL</label>
+								<code>
+									${file/url_listen}
+								</code>
+							</div>
+						</fieldset>
+					</tal:block>
+					<tal:block tal:condition="php: fire == 'view'">
+						<fieldset>
+							<legend>View File</legend>
+								<iframe tal:attributes="src file/url_server_static" style="width:720px;height:480px;border:0;margin:0;padding:0;"></iframe>
+						</fieldset>
+						<fieldset>
+							<legend>Sharing</legend>
+							<div>
+								<label>Image Code</label>
+								<code>
+									&lt;a href=&quot;${file/url_view}&quot;&gt;&lt;img src=&quot;${file/url_view}&quot; alt=&quot;${file/name}&quot; /&gt;&lt;/a&gt;
+								</code>
+							</div>
+							<div>
+								<label>Link Code</label>
+								<code>
+									&lt;a href=&quot;${file/url_view}&quot;&gt;${file/name}&lt;/a&gt;
+								</code>
+							</div>
+							<div>
+								<label>Public URL</label>
+								<code>
+									${file/url_view}
+								</code>
+							</div>
+						</fieldset>
+					</tal:block>
+					<fieldset>	
+						<legend>File Info</legend>
+						<div id="file-info">
+							<div>
+								<label>Name</label>
+								${file/name}
+							</div>
+							<div>
+								<label>Size</label>
+								${file/size}
+							</div>
+							<div>
+								<label>Type</label>
+								${file/mime_type}
+							</div>
+							<div>
+								<label>Hits (MTD)</label>
+								${file/hits} (${file/hits_mtd})
+							</div>
+						</div>
+					</fieldset>
+					<fieldset>
+						<legend>File Options</legend>
+						<div>
+							<label>Download</label>
+							<a tal:attributes="href file/url_server_download" tal:content="file/name" />
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

@@ -1,0 +1,18 @@
+<tal:block metal:define-macro="debug">
+	<div class="accordion" id="collapse-group" tal:condition="exists: global/debug">
+		<div class="accordion-group widget-box">
+			<tal:block tal:repeat="row global/debug">
+				<div class="accordion-heading">
+					<div class="widget-title">
+						<a data-parent="#collapse-group" href="#${row/handle}" data-toggle="collapse">
+							<span class="icon"><i class="icon-eye-open">&#160;</i></span><h5 tal:content="row/title" />
+						</a>
+					</div>
+				</div>
+				<div class="collapse accordion-body" tal:attributes="id row/handle">
+					<div class="widget-content" tal:content="structure row/entry" />
+				</div>
+			</tal:block>
+		</div> 
+	</div>
+</tal:block>

@@ -1,0 +1,31 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="body">
+		<div class="logo">
+			<a tal:attributes="href url/home"><img src="images/logo.png" /></a>
+		</div>
+		<div class="n">
+			<div class="u">
+				<h2>Login to Access Your Account</h2>
+				<div>
+					<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
+					<form tal:attributes="action url/login" method="post">
+					<input type="hidden" name="login" value="true" />
+					<input type="hidden" name="file_session" tal:condition="exists: file_session" tal:attributes="value file_session" />
+					<div class="formRow">
+						<label>Email</label> <input name="email" type="text" />
+					</div>
+					<div class="formRow">
+						<label>Password</label> <input autocomplete="off" name="password" type="password" />
+					</div>
+					<div class="formRow">
+						<label>Remember Me?</label> <input type="checkbox" name="remember" value="true" checked="checked" style="width: auto;" /> 
+					</div>
+					<div class="formSubmit">
+						<input type="submit" name="upload" class="button btn1" value="Login" />
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>

@@ -1,0 +1,98 @@
+<tal:block metal:define-macro="page">
+	<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+		<head>
+			<base tal:attributes="href global/theme_path" />
+			<title tal:content="page_title | global/site_title | default">Vidcache Management - Admin Panel</title>
+			<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			<!--Theme Related Files-->
+			<!--[if gte IE 5.5]>
+			<script language="JavaScript" src="/js/ie.js" type="text/JavaScript"></script>
+			<![endif]-->
+			<!--CSS Files-->
+			<tal:block tal:condition="exists: global/css" tal:content="structure global/css" />
+
+			<!--JavaScript Files-->
+			<tal:block tal:condition="exists: global/js" tal:content="structure global/js" />
+
+		</head>
+		<body>
+			<tal:block metal:define-slot="body" />
+			<tal:block tal:condition="stub/body">
+				<!--page wrapper-->
+				<div id="wrapper">
+					<!--Header-part-->
+					<div id="header">
+						<h1><a tal:attributes="href url/home" tal:content="global/site_name | default">Vidcache Management</a></h1>
+					</div>
+					<!--close-Header-part-->
+
+					<tal:block tal:condition="stub/navbar">
+						<!--top-Header-navbar-->
+						<div id="user-nav" class="navbar navbar-inverse">
+							<ul class="nav">
+								<li><a tal:attributes="href url/profile"><i class="icon icon-user">&#160;</i> <span class="text" tal:content="global/staff_name | default">Administrator</span></a></li>
+								<li><a tal:attributes="href url/staff"><i class="icon icon-cog">&#160;</i> <span class="text">Staff</span></a></li>
+								<li><a tal:attributes="href url/logout"><i class="icon icon-share-alt">&#160;</i> <span class="text">Logout</span></a></li>
+							</ul>
+						</div>
+						<!--close-top-Header-navbar-->
+					</tal:block>
+
+					<tal:block tal:condition="stub/sidebar">
+						<!--side bar-->
+						<div id="sidebar">
+							<ul>
+								<li class="active"><a tal:attributes="href url/home"><i class="icon icon-home">&#160;</i> <span>Dashboard</span></a></li>
+								<li>
+									<a tal:attributes="href url/client"><i class="icon icon-signal">&#160;</i> <span>Clients</span></a>
+									<ul>
+										<li><a tal:attributes="href url/client">Browse</a></li>
+										<li><a tal:attributes="href url/client_create">Create</a></li>
+									</ul>
+								</li>
+								<li>
+									<a tal:attributes="href url/staff"><i class="icon icon-wrench">&#160;</i> <span>System</span></a>
+									<ul>
+										<li><a tal:attributes="href url/staff">Staff</a></li>
+										<li><a tal:attributes="href url/ticket_department">Ticket Departments</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!--end nav bar-->
+					</tal:block>
+
+					<!--page content-->
+					<div id="middlepart">
+						<div id="content">
+							<div id="content-header">
+								<tal:block tal:condition="stub/breadcrumb">
+									<div id="breadcrumb">
+										<tal:block metal:define-slot="breadcrumb" />
+									</div>
+								</tal:block>
+								<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
+							</div>
+							<tal:block metal:define-slot="content" />
+						</div>
+					</div>
+					<!--end page content-->
+				</div>
+				<!--end page wrapper-->
+			</tal:block>
+			<tal:block tal:condition="stub/footer">
+				<!--footer-->
+				<div class="row-fluid">
+					<div id="footer" class="span12">
+						<span tal:content="global/copyright">(c) 2013 Vidcache Management.</span>
+						<small>Vidcache Web: v${global/version} | OpenLSS: v${global/lss_version} | ${global/stats}</small>
+					</div>
+				</div>
+				<!--end footer-->
+			</tal:block>
+			<tal:block tal:condition="exists: global/debug" metal:use-macro="debug.xhtml/debug" />
+		</body>
+	</html>
+</tal:block>

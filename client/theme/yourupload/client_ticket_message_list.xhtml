@@ -1,0 +1,75 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="widget-box">
+				<div class="widget-title">
+					<span class="icon"><i class="icon-envelope">&#160;</i></span> 
+					<h5>Ticket Messages</h5>
+				</div>
+				<div class="widget-content nopadding">
+					<table class="table table-bordered data-table">
+						<thead>
+							<tr>
+								<th width="20%">Info</th>
+								<th>Post</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="gradeX" tal:condition="php: count(messages)" tal:repeat="row messages">
+								<td>
+									<div tal:content="row/author_name" />
+								<div><small><em tal:content="row/author_email" /></small></div>
+									<div><small><strong>Posted:</strong> <span tal:content="row/posted" /></small></div>
+								</td>
+								<td>
+									<p tal:content="row/message" />
+									<hr />
+									<tal:block tal:condition="php: count(row['attachments'])" tal:repeat="attach row/attachments">
+										<div>
+											<div><a target="_blank" tal:attributes="attach/url" tal:content="attach/file_name" /></div>
+											<ul>
+												<li>Type: <span tal:content="attach/mime_type" /></li>
+												<li>Size: <span tal:content="attach/file_size" /></li>
+												<li>Checksum: <span tal:content="attach/checksum" /> (SHA1)</li>
+											</ul>
+										</div>
+									</tal:block>
+									<div tal:condition="php: !count(row['attachments'])"><i>no attachments</i></div>
+								</td>
+							</tr>
+							<tr class="gradeX" tal:condition="php: !count(messages)">
+								<td colspan="2">No messages</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="widget-content nopadding">
+					<form method="post" class="form-horizontal" tal:attributes="action url_client_ticket_manage" enctype="multipart/form-data">
+						<input type="hidden" name="ticket_message_create" value="true" />
+						<div class="control-group">
+							<label class="control-label">Message :</label>
+							<div class="controls">
+								<textarea class="span12" name="message"></textarea>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Attachment :</label>
+							<div class="controls">
+								<input type="file" name="attachments[]" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Comment :</label>
+							<div class="controls">
+								<input type="checkbox" name="is_comment" value="true" />
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" class="btn btn-success">Reply</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

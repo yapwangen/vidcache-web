@@ -1,0 +1,120 @@
+<tal:block metal:define-macro="page">
+	<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+		<head>
+			<base tal:attributes="href global/theme_path" />
+			<title tal:content="page_title | global/site_title | default">Vidcache Web - Client Panel</title>
+			<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			
+			<!--SEO Stuff-->
+			<meta name="keywords" content="upload,video,image,sound,hosting,free,storage" />
+			<meta name="description" content="YourUpload is a free file hosting service for all types of files and supports streaming playback of media files with unlimited emebds." />
+			<meta http-equiv="cache-control" content="no-cache" />
+			<link rel="icon" type="image/png" href="images/yu-favicon.png" />
+
+			<!--Theme Related Files-->
+			<!--CSS Files-->
+			<tal:block tal:condition="exists: global/css" tal:content="structure global/css" />
+
+			<!--JavaScript Files-->
+			<tal:block tal:condition="exists: global/js" tal:content="structure global/js" />
+
+			<script type="text/javascript">
+				var url_home = "${url/home}";
+				var base_url = "${url/home}";
+			</script>
+		</head>
+		<body>
+			<tal:block tal:condition="stub/header">
+				<!--page header-->
+				<div class="head">
+					<div class="righthead">
+						<tal:block tal:condition="exists:global/client_loggedin">
+							<span class="email" tal:content="global/client/email" /> <a tal:attributes="href url/logout">Logout</a>
+						</tal:block>
+						<tal:block tal:condition="not: exists: global/client_loggedin">
+							<a tal:attributes="href url/login">Login</a>
+						</tal:block>
+					</div>
+					<div class="lefthead">
+						<tal:block tal:condition="not: exists:global/client_loggedin">
+							<a tal:attributes="href url/register">Sign Up</a>
+							<a tal:attributes="href url/news">News</a>
+							<a href="${url/page}beta">Beta</a>
+							<a href="${url/page}features">Features</a>
+							<a href="${url/page}about">About Us</a>
+						</tal:block>
+						<tal:block tal:condition="exists:global/client_loggedin">
+							<tal:block tal:condition="global/client_free">
+								<a tal:attributes="href url/client_home">My Files</a>
+								<a tal:attributes="href url/news">News</a>
+								<a href="${url/page}beta">Beta</a>
+								<a href="${url/page}features">Features</a>
+								<a href="${url/page}about">About Us</a>
+								<a tal:attributes="href url/premium_signup" style="font-weight: bold;">Go Premium!</a>
+							</tal:block>
+							<tal:block tal:condition="global/client_premium">
+								<a tal:attributes="href url/user_home">My ${global/site_name}</a>
+								<a tal:attributes="href url/user_files">My Files</a>
+								<a tal:attributes="href url/file_import">Remote File</a>
+								<a tal:attributes="href url/file_import_video">Video Import</a>
+								<a href="${url/page}beta">Beta</a>
+								<a tal:attributes="href url/news">News</a>
+								<a tal:attributes="href url/user_tier">Change Tier</a>
+								<a tal:attributes="href url/user_ftp">Manage FTP</a>
+								<a tal:attributes="href url/user_billing">Billing</a>
+								<a tal:attributes="href url/user_cancel">Cancel Account</a>
+							</tal:block>
+						</tal:block>
+						
+					</div>
+				</div>
+				<!--end header-->
+			</tal:block>
+			
+			<tal:block metal:define-slot="body" />
+			<tal:block tal:condition="stub/body">
+				<!--page content-->
+				<div id="box">
+					<div class="main">
+						<tal:block metal:define-slot="content" />
+					</div>
+				</div>
+				<!--end page content-->
+			</tal:block>
+			
+			<tal:block tal:condition="stub/footer">
+				<!--footer-->
+				<div class="foot">
+					<div class="optimize">
+						<a tal:attributes="href url/bug_report">Bug Report</a>
+						<a href="${url/page}terms-of-service">Terms of Service</a>
+						<a href="${url/page}privacy-policy">Privacy Policy</a> 
+						<a href="${url/page}dmca-policy">DMCA Policy</a>
+						<a tal:attributes="href url/contact_us">Contact</a>
+						<span style="margin-left: 40px;">Free file hosting service for: videos, sound files, text, images and more</span>
+					</div>
+					<div class="ogr">
+						<span class="copyright">${global/copyright} <small>Version: ${global/lss_version} | ${global/stats}</small></span>
+						<script id="_wausbi">var _wau = _wau || []; _wau.push(["small", "pa2k9dsbs4kh", "sbi"]);(function() { var s=document.createElement("script"); s.async=true; s.src="http://widgets.amung.us/small.js";document.getElementsByTagName("head")[0].appendChild(s);})();</script>
+					</div>
+				</div>
+				<!--end footer-->
+			</tal:block>
+			<tal:block tal:condition="exists: global/debug" metal:use-macro="debug.xhtml/debug" />
+			<!-- Piwik --> 
+			<script type="text/javascript">
+			var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.esited.com/" : "http://stats.esited.com/");
+			document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+			</script><script type="text/javascript">
+			try {
+			var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+			piwikTracker.trackPageView();
+			piwikTracker.enableLinkTracking();
+			} catch( err ) {}
+			</script><noscript><p><img src="http://stats.esited.com/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+			<!-- End Piwik Tracking Code -->
+		</body>
+	</html>
+</tal:block>

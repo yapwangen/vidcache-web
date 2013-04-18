@@ -1,0 +1,8 @@
+h2 {text-align: center; margin-bottom: 10px;}
+.formRow {line-height: 300%;}
+.formRow label {display: inline-block; width: 150px; font-weight: bold;}
+.formRow input, .formRow textarea {width: 400px; border: 1px solid #222; padding: 5px; color: #222;}
+.formRow textarea {height: 40px;}
+.files {padding: 10px;}
+.files div {line-height: 200%; color: #333;}
+.or {line-height: 300%; color: #999; text-align: center; font-size: 16px;}

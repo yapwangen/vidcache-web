@@ -1,0 +1,17 @@
+<tal:block metal:use-macro="structure.xhtml/page">
+	<tal:block metal:fill-slot="breadcrumb">
+		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
+		<a tal:attributes="href url/client" class="tip-bottom">Clients</a>
+		<a tal:attributes="href url_client_manage"  class="tip-bottom">#${client_id}</a>
+		<tal:block tal:condition="exists: edit">
+			<a tal:attributes="href url_client_contact_edit" class="current">Edit Contact #${contact_id}</a>
+		</tal:block>
+		<tal:block tal:condition="exists: create">
+			<a href="" class="current">Create Contact</a>
+		</tal:block>
+	</tal:block>
+	<tal:block metal:fill-slot="content">
+		<tal:block metal:use-macro="client.xhtml/header" />
+		<tal:block metal:use-macro="contact.xhtml/contact" />
+	</tal:block>
+</tal:block>
