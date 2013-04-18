@@ -11,7 +11,6 @@ $vc = SDK::load();
 $vc->connect(Config::get('vidcache','api_key'));
 
 //get args
-$client_id = Session::get('client_id');
 $handle = get('handle');
 
 //check if we have a different signature cached for this client
@@ -23,4 +22,6 @@ $params['file'] = $file = FS::fetchFileByHandle($handle);
 $params['file'] = array_merge($params['file'],FS::URLsByFile($file));
 //set the action type
 $params['fire'] = get('fire');
+//format stuff
+$params['file']['size'] = format_bytes($params['file']['size']);
 Tpl::_get()->output('client_file_view',$params);
