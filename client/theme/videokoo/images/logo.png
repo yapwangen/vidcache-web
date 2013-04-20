@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+	
+	<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+		<head>
+			<base href="/client/theme/videokoo/"/>
+			<title>Videokoo</title>
+			<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			
+			<!--SEO Stuff-->
+			<meta name="keywords" content="upload,video,image,sound,hosting,free,storage"/>
+			<meta name="description" content="YourUpload is a free file hosting service for all types of files and supports streaming playback of media files with unlimited emebds."/>
+			<meta http-equiv="cache-control" content="no-cache"/>
+			<link rel="icon" type="image/png" href="images/yu-favicon.png"/>
+
+			<!--Theme Related Files-->
+			<!--CSS Files-->
+				<link type="text/css" rel="stylesheet" href="css/style.css" media="screen" />
+	<link type="text/css" rel="stylesheet" href="css/icons.css" media="screen" />
+	<link type="text/css" rel="stylesheet" href="css/home.css" media="screen" />
+
+
+			<!--JavaScript Files-->
+				<script type="text/javascript" src="js/mootools-core.js"></script>
+	<script type="text/javascript" src="js/mootools-more.js"></script>
+	<script type="text/javascript" src="js/mootools-xml.js"></script>
+	<script type="text/javascript" src="js/upload/Form.MultipleFileInput.js"></script>
+	<script type="text/javascript" src="js/upload/Form.Upload.js"></script>
+	<script type="text/javascript" src="js/upload/Request.File.js"></script>
+	<script type="text/javascript" src="js/upload/iFrameFormRequest.js"></script>
+	<script type="text/javascript" src="js/home.js"></script>
+
+
+			<script type="text/javascript">
+				var url_home = "/index.php";
+				var base_url = "/index.php";
+			</script>
+		</head>
+		<body>
+			
+				<!--page header-->
+				<div class="head">
+					<div class="righthead">
+						
+						
+							<a href="/index.php?act=client&amp;do=login">Login</a>
+						
+					</div>
+					<div class="lefthead">
+						
+							<a href="/index.php?act=client&amp;do=register">Sign Up</a>
+							<a href="/index.php?act=news">News</a>
+							<a href="/index.php?act=page&amp;page=beta">Beta</a>
+							<a href="/index.php?act=page&amp;page=features">Features</a>
+							<a href="/index.php?act=page&amp;page=about">About Us</a>
+						
+						
+						
+					</div>
+				</div>
+				<!--end header-->
+			
+			
+			
+			
+				<!--page content-->
+				<div id="box">
+					<div class="main">
+						
+		<div class="logo">
+			<a href="/index.php"><img src="images/logo.png"/></a>
+		</div>
+		<div class="n">
+			<div class="t">
+				<span>Local File</span>
+				<a href="/index.php?act=client&amp;do=register">Remote File</a>
+				<a href="/index.php?act=client&amp;do=register">Video Import</a>
+			</div>
+			<div class="clear"></div>
+			<div class="u">
+				<form method="post" enctype="multipart/form-data" action="/index.php?act=client&amp;do=file_upload_public">
+				<div>
+					<div class="formRow">
+						<label for="file" class="floated">File: </label>
+						<input type="file" id="file" name="file[]" multiple="multiple"/><br/>
+					</div>
+
+					<div class="formRow">
+						<input type="submit" name="upload" class="button btn1" value="Upload"/>
+					</div>
+					
+					<div class="formRow" style="text-align: center; margin-top: 5px;">
+						Unlimited Video Uploads and Streaming!
+					</div>
+
+				</div>
+				</form>
+			</div>
+		</div>
+	
+					</div>
+				</div>
+				<!--end page content-->
+			
+			
+			
+				<!--footer-->
+				<div class="foot">
+					<div class="optimize">
+						<a href="/index.php?act=contact_us&amp;do=bug_report">Bug Report</a>
+						<a href="/index.php?act=page&amp;page=terms-of-service">Terms of Service</a>
+						<a href="/index.php?act=page&amp;page=privacy-policy">Privacy Policy</a> 
+						<a href="/index.php?act=page&amp;page=dmca-policy">DMCA Policy</a>
+						<a href="/index.php?act=contact_us">Contact</a>
+						<span style="margin-left: 40px;">Free file hosting service for: videos, sound files, text, images and more</span>
+					</div>
+					<div class="ogr">
+						<span class="copyright">© 2013 Videokoo <small>Version: 0.0 | Execution: 0.02777 | Memory: 0.98MB</small></span>
+						<!--whos.amung.us-->
+						<script id="_wau6d8">
+							var _wau = _wau || []; _wau.push(["small", "k30nqffzzj3d", "6d8"]);
+							(function() {var s=document.createElement("script"); s.async=true;
+							s.src="http://widgets.amung.us/small.js";
+							document.getElementsByTagName("head")[0].appendChild(s);
+							})();
+						</script>
+						<!--END whos.amung.us-->
+					</div>
+				</div>
+				<!--end footer-->
+			
+			
+		</body>
+	</html>
