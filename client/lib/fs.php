@@ -70,6 +70,16 @@ abstract class FS {
 		);
 	}
 
+	public static function fetchFileByHandleOrEmbedHandle($handle){
+		return Db::_get()->fetch(
+			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
+			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
+			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
+			.' WHERE fh.handle = ? or feh.handle = ?'
+			,array($handle,$handle)
+		);
+	}
+
 	public static function fetchSignature(){
 		return Db::_get()->fetch(
 			'SELECT * FROM `fs_signature` WHERE `vc_client_id` = ?'

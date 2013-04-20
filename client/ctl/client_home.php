@@ -138,7 +138,9 @@ foreach($info['files'] as $file){
 	$file['size'] = format_bytes($file['size']);
 	$file['bandwidth'] = format_bytes($file['bandwidth']);
 	$file['bandwidth_mtd'] = format_bytes($file['bandwidth_mtd']);
-	$file['url'] = Url::client_file_view(FS::actionType($file['mime_type']),$file['handle']);
+	if(!empty($file['embed_handle'])) $url_handle = $file['embed_handle'];
+	else $url_handle = $file['handle'];
+	$file['url'] = Url::client_file_view(FS::actionType($file['mime_type']),$url_handle);
 	$params['files'][] = $file;
 }
 foreach($info['folders'] as $folder){

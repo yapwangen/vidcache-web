@@ -17,7 +17,7 @@ $handle = get('handle');
 FS::updateCache($vc);
 
 $params = array();
-$params['file'] = $file = FS::fetchFileByHandle($handle);
+$params['file'] = $file = FS::fetchFileByHandleOrEmbedHandle($handle);
 if(!$file)
 	throw new Exception('File not found');
 //merge in urls
