@@ -1,7 +1,7 @@
 <?php
-$config['site_name'] = 'Videokoo';
+$config['site_name'] = 'Vidcache Web';
 $config['log']['file'] = ROOT.'/log/vc-web';
-$config['theme']['name'] = 'videokoo';
+$config['theme']['name'] = 'yourupload';
 $config['contact']['email'] = 'contact@nullivex.com';
 
 //embed mime types
