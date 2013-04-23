@@ -23,6 +23,13 @@
 				</form>
 				<h2>Files</h2>
 				<div>
+					<div style="float: right;">
+						<form tal:attributes="action url_action" method="post">
+							<input type="hidden" name="update_hidden" value="true" />
+							<input type="checkbox" name="show_hidden" value="true" onchange="this.form.submit();" tal:attributes="checked is_show_hidden" />
+							Show Hidden Objects
+						</form>
+					</div>
 					<strong>Path:</strong>
 					<tal:block tal:repeat="row path">
 						<a tal:attributes="href row/url">
@@ -75,10 +82,19 @@
 						</tal:block>
 					</table>
 					<div style="padding: 10px 0">
-						<div style="padding: 5px;"><input type="checkbox" name="confirm_file_deletion" value="true" /> Confirm File Deletion</div>
-						<div style="padding: 5px;"><input type="checkbox" name="confirm_folder_deletion" value="true" />Confirm Folder Deletion (Recursive)</div>
+						<div style="padding: 5px;">
+							<input type="checkbox" name="confirm_file_deletion" value="true" /> Confirm File Deletion
+						</div>
+						<div style="padding: 5px;">
+							<input type="checkbox" name="confirm_folder_deletion" value="true" />Confirm Folder Deletion (Recursive)
+						</div>
+						<div style="padding: 5px;">
+							Destination Path:
+							<input type="text" name="destination_path" value="" />
+						</div>
 						<div style="padding: 5px;">
 							<select name="action">
+								<option value="move">Move Select Files/Folders to Destination Path</option>
 								<option value="delete">Delete Selected</option>
 							</select>
 						</div>
