@@ -115,7 +115,25 @@ if(post('action') == 'delete'){
 	}
 }
 
+if(post('action') == 'move'){
+	try {
+		$dest = post('destination_path');
+		$vc->pathMove(post('file'),post('folder'),$root_path.$dest);
+		alert('File(s) and/or Folder(s) moved successfully',true,true);
+		redirect(Url::client_home_path($dest));
+	} catch(Exception $e){
+		alert($e->getMessage(),false);
+	}
+}
+
+if(post('update_hidden')){
+	$_SESSION['show_hidden_objects'] = post('show_hidden') ? true : false;
+}
+
+$show_hidden = session('show_hidden_objects');
+
 $params = array();
+$params['is_show_hidden'] = $show_hidden;
 $params['url_action'] = Url::client_home_path($path);
 $params['url_action_upload'] = $params['url_action'].'&upload=true';
 $params['files'] = $params['folders'] = array();
@@ -134,6 +152,7 @@ unset($built);
 $info['files'] = FS::fetchFilesByParent($root_path.$path);
 $info['folders'] = FS::fetchFoldersByParent($root_path.$path);
 foreach($info['files'] as $file){
+	if(strpos($file['name'],'.') === 0 && !$show_hidden) continue;
 	$file['created'] = age($file['created']);
 	$file['size'] = format_bytes($file['size']);
 	$file['bandwidth'] = format_bytes($file['bandwidth']);
@@ -144,6 +163,7 @@ foreach($info['files'] as $file){
 	$params['files'][] = $file;
 }
 foreach($info['folders'] as $folder){
+	if(strpos($folder['name'],'.') === 0 && !$show_hidden) continue;
 	$folder['url'] = Url::client_home_path(str_replace($root_path,'',$folder['path']));
 	$folder['created'] = age($folder['created']);
 	$params['folders'][] = array_merge(array('url'=>''),$folder);
