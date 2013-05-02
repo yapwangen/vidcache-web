@@ -1,11 +1,20 @@
 <?php
 
-//add css
+//vendor css
+$this->addCss('css/vendor/datatables.bootstrap.css');
+$this->addCss('css/vendor/dropzone.css');
+
+//re-override userspace css
 $this->addCss('css/user.css');
 
-//add js
-$this->addJs('js/upload/Form.MultipleFileInput.js');
-$this->addJs('js/upload/Form.Upload.js');
-$this->addJS('js/upload/Request.File.js');
-$this->addJs('js/upload/iFrameFormRequest.js');
-$this->addJs('js/upload.js');
+//datatables
+$this->addJs('js/vendor/jquery.dataTables.min.js');
+$this->addJs('js/vendor/ZeroClipboard.js');
+$this->addJs('js/vendor/TableTools.min.js');
+$this->addJs('js/vendor/datatables.bootstrap.js');
+
+//dropzone
+$this->addJs('js/vendor/dropzone.min.js');
+
+//userspace
+$this->addJs('js/file_manager.js');

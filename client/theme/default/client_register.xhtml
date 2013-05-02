@@ -1,30 +1,35 @@
 <tal:block metal:use-macro="structure.xhtml/page">
-	<tal:block metal:fill-slot="body">
-		<div class="logo">
-			<a tal:attributes="href url/home"><img src="images/logo.png" /></a>
-		</div>
-		<div class="n">
-			<div class="u">
-				<h2>Sign Up to Share and Save Your Files</h2>
-				<div>
-					<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
-					<form tal:attributes="action url/register;" method="post">
-					<input type="hidden" name="register" value="true" />
-					<div class="formRow">
-						<label>Email</label> <input name="email" type="text" tal:attributes="value email" />
+	<tal:block metal:fill-slot="content">
+		<div class="hero-unit">
+			<h1>Sign Up Today</h1>
+			<p>Complete this simple form to start using our services!</p>
+			<form tal:attributes="action url/register" method="post" class="form-horizontal">
+				<input type="hidden" name="register" value="true" />
+				<div class="control-group">
+					<label class="control-label" for="email">Email Address</label>
+					<div class="controls">
+						<input type="text" name="email" id="email" placeholder="Email" tal:attributes="value email" />
 					</div>
-					<div class="formRow">
-						<label>Password</label> <input autocomplete="off" name="password" type="password" />
-					</div>
-					<div class="formRow">
-						<label>Confirm Password</label> <input autocomplete="off" name="confirm_password" type="password" />
-					</div>
-					<div class="formSubmit">
-						<input type="submit" name="upload" class="button btn1" value="Sign Up" />
-					</div>
-					</form>
 				</div>
-			</div>
+				<div class="control-group">
+					<label class="control-label" for="password">Password</label>
+					<div class="controls">
+						<input type="password" name="password" id="password" placeholder="Password" />
+						<input type="password" name="confirm_password" placeholder="Confirm Password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<label class="checkbox">
+							<input type="checkbox" name="remember" value="true" checked="checked" />
+							Remember My Login
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<button type="submit" class="btn btn-primary">Complete Registration</button>
+				</div>
+			</form>
 		</div>
 	</tal:block>
 </tal:block>

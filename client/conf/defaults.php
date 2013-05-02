@@ -1,7 +1,7 @@
 <?php
 $config['site_name'] = 'Vidcache Web';
 $config['log']['file'] = ROOT.'/log/vc-web';
-$config['theme']['name'] = 'yourupload';
+$config['theme']['name'] = 'default';
 $config['contact']['email'] = 'contact@nullivex.com';
 
 //embed mime types

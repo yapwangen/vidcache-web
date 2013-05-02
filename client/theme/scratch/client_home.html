@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Vidcache Web</title>
+		<link href="css/vendor/normalize.css" rel="stylesheet" />
+		<link href="css/vendor/main.css" rel="stylesheet" />
+		<link href="css/vendor/bootstrap.min.css" rel="stylesheet" />
+		<link href="css/vendor/datatables.bootstrap.css" rel="stylesheet" />
+		<link href="css/vendor/dropzone.css" rel="stylesheet" />
+		<link href="css/user.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="active"><a href="#">My Files</a></li>
+							<li><a href="#about">News</a></li>
+							<li><a href="#contact">Beta</a></li>
+							<li><a href="#contact">Go Premium!</a></li>
+						</ul>
+						<form class="navbar-form pull-right">
+							<input class="span2" type="text" placeholder="Email">
+							<input class="span2" type="password" placeholder="Password">
+							<button type="submit" class="btn">Sign in</button>
+						</form>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div id="header">
+				<h5><a id="logo" href="home.html">VIDEOKOO</a></h5>
+			</div>
+
+			<ul class="breadcrumb folder-path">
+				<li><a href="#"><i class="icon-folder-open"></i> Root</a></li>
+			</ul>
+
+			<form action="/index.php" method="post" class="dropzone" id="file-upload"></form>
+
+			<div id="file-manager-wrapper">
+				<form action="#" method="get">
+					<table class="table table-striped table-bordered" id="file-manager">
+						<thead>
+							<tr>
+								<th><input type="checkbox" /></th>
+								<th></th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size</th>
+								<th>Hits</th>
+								<th>Tranfer*</th>
+								<th>Uploaded</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td><a href="#" title="Documents"><i class="icon-folder-close"></i></a></td>
+								<td><a href="#" class="rename">Documents</a></td>
+								<td><span class="muted">folder</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td>
+									<p class="text-right">
+										<a href="#" title="Rename"><i class="icon-edit"></i></a>
+										<a href="#" title="Delete"><i class="icon-remove"></i></a>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td><a href="#" title="Music"><i class="icon-folder-close"></i></a></td>
+								<td><a href="#">Music</a></td>
+								<td><span class="muted">folder</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td>
+									<p class="text-right">
+										<a href="#" title="Rename"><i class="icon-edit"></i></a>
+										<a href="#" title="Delete"><i class="icon-remove"></i></a>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td><a href="#" title="Videos"><i class="icon-folder-close"></i></a></td>
+								<td><a href="#">Videos</a></td>
+								<td><span class="muted">folder</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td>
+									<p class="text-right">
+										<a href="#" title="Rename"><i class="icon-edit"></i></a>
+										<a href="#" title="Delete"><i class="icon-remove"></i></a>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td><a href="#" title="passwords.txt"><i class="icon-file"></i></a></td>
+								<td><a href="#">passwords.txt</a></td>
+								<td><span class="muted">text/plain</span></td>
+								<td><span class="muted">3KB</span></td>
+								<td><span class="muted">4</span></td>
+								<td><span class="muted">12KB</span></td>
+								<td><span class="muted">3 days ago</span></td>
+								<td>
+									<p class="text-right">
+										<a href="#" title="Manage"><i class="icon-wrench"></i></a>
+										<a href="#" title="Download"><i class="icon-download-alt"></i></a>
+										<a href="#" title="Rename"><i class="icon-remove"></i></a>
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div id="options">
+						<p>Select an action with the selected items above</p>
+						<div class="tabbable">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#action-move" data-toggle="tab">Move</a></li>
+								<li><a href="#action-publish" data-toggle="tab">Publish</a></li>
+								<li><a href="#action-delete" data-toggle="tab">Delete</a></li>
+							</ul>
+							<div class="tab-content">
+								<div class="tab-pane fade active in" id="action-move">
+									<div class="control-group">
+										<label class="control-label">Destination</label>
+										<div class="controls">
+											<input class="span8" type="text" name="dest" placeholder="Destination, EG: /Documents/My Folder" />
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<button type="submit" class="btn btn-primary">Move</button>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="action-publish">
+									<div class="control-group">
+										<div class="controls">
+											<button type="submit" class="btn btn-primary">Submit</button>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="action-delete">
+									<div class="control-group">
+										<label class="checkbox">
+											<input type="checkbox" name="confirm_file_delete" /> Confirm File Deletion
+										</label>
+									</div>
+									<div class="control-group">
+										<label class="checkbox">
+											<input type="checkbox" name="confirm_folder_delete" /> Confirm Folder Deletion (Removes all files/folder within)
+										</label>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<button type="submit" class="btn btn-primary">Submit</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<hr />
+			<footer class="row-fluid footer">
+				<div class="span6">
+					<ul class="footer-links">
+						<li><a href="" class="btn btn-small disabled">&copy; 2013 Videokoo</a></li>
+						<li><a href="" class="btn btn-small disabled">Vidcache Web: 0.3.0</a></li>
+						<li><a href="" class="btn btn-small disabled">OpenLSS: 0.0</a></li>
+					</ul>
+				</div>
+				<div class="span6">
+					<ul class="footer-links" style="float: right;">
+						<li><a href="" class="btn btn-small">Bug Report</a></li>
+						<li><a href="" class="btn btn-small">Terms of Service</a></li>
+						<li><a href="" class="btn btn-small">DMCA Policy</a></li>
+						<li><a href="" class="btn btn-small">Contact</a></li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+
+		<!--Global Vendor JS-->
+		<script type="text/javascript" src="js/vendor/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/vendor/modernizr-2.6.2.min.js"></script>
+		<script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+
+		<!--DataTables-->
+		<script type="text/javascript" src="js/vendor/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="js/vendor/ZeroClipboard.js"></script>
+		<script type="text/javascript" src="js/vendor/TableTools.min.js"></script>
+		<script type="text/javascript" src="js/vendor/datatables.bootstrap.js"></script>
+
+		<!--DropZone-->
+		<script type="text/javascript" src="js/vendor/dropzone.min.js"></script>
+
+		<!--Userspace JS-->
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/plugins.js"></script>
+		<script type="text/javascript" src="js/file_manager.js"></script>
+
+	</body>
+</html>

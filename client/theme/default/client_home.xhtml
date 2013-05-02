@@ -1,121 +1,149 @@
 <tal:block metal:use-macro="structure.xhtml/page">
 	<tal:block metal:fill-slot="content">
-		<div class="lm">
-			<div class="nn">
-				<div class="nlogo">
-					<a tal:attributes="href url/home"><img src="images/logo.png" /></a>
-				</div>
-			</div>
-			<div class="clear"></div>
-			<div class="cc">
-				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
-				<h2>Welcome to your account!</h2>
-				<h3>Upload New Files</h3>
-				<form method="get" tal:attributes="action url_action_upload" enctype="multipart/form-data">
-				<div>
-					<div class="formRow">
-						<input type="file" id="file" name="file[]" multiple="multiple" /><br />
+		<ul class="breadcrumb folder-path">
+			<li class="pull-right">
+				<form tal:attributes="action url_action" method="post" class="form-inline">
+					<input type="hidden" name="update_hidden" value="true" />
+					<div class="control-group">
+						<div class="controls">
+							<label class="checkbox">
+								<input type="checkbox" name="show_hidden" value="true" onchange="this.form.submit();" tal:attributes="checked is_show_hidden" />
+								Show Hidden Objects
+							</label>
+						</div>
 					</div>
-					<div class="formRow" style="text-align: center">
-						<input type="submit" name="upload" value="Upload" />
-					</div>
-				</div>
 				</form>
-				<h2>Files</h2>
-				<div>
-					<div style="float: right;">
-						<form tal:attributes="action url_action" method="post">
-							<input type="hidden" name="update_hidden" value="true" />
-							<input type="checkbox" name="show_hidden" value="true" onchange="this.form.submit();" tal:attributes="checked is_show_hidden" />
-							Show Hidden Objects
-						</form>
-					</div>
-					<strong>Path:</strong>
-					<tal:block tal:repeat="row path">
-						<a tal:attributes="href row/url">
-							<i tal:condition="not: repeat/row/end" tal:attributes="class string:icon icon-folder-close">&#160;</i>
-							<i tal:condition="repeat/row/end" tal:attributes="class string:icon icon-folder-open">&#160;</i>
-							<span tal:content="row/name" />
-						</a> /
-					</tal:block>
-				</div>
-				<form tal:attributes="action url_action" method="post">
-					<table class="tbl">
+			</li>
+			<tal:block tal:repeat="row path">
+				<li>
+					<a tal:attributes="href row/url">
+						<i tal:condition="not: repeat/row/end" tal:attributes="class string:icon icon-folder-close">&#160;</i>
+						<i tal:condition="repeat/row/end" tal:attributes="class string:icon icon-folder-open">&#160;</i>
+						<span tal:content="row/name" />
+					</a>
+				</li>
+			</tal:block>
+		</ul>
+
+		<form tal:attributes="action url_action_upload" method="post" class="dropzone" id="file-upload">&#160;</form>
+
+		<div id="file-manager-wrapper">
+			<form tal:attributes="action url_action" method="get">
+				<table class="table table-striped table-bordered" id="file-manager">
+					<thead>
 						<tr>
-							<th width="5px"></th>
-							<th width="5px"></th>
+							<th><input type="checkbox" /></th>
+							<th></th>
 							<th>Name</th>
 							<th>Type</th>
 							<th>Size</th>
 							<th>Hits</th>
-							<th>Transfer (MTD)</th>
-							<th>Created</th>
+							<th>Tranfer*</th>
+							<th>Uploaded</th>
+							<th></th>
 						</tr>
+					</thead>
+					<tbody>
 						<tal:block tal:repeat="folder folders">
 							<tr>
 								<td><input type="checkbox" name="folder[]" tal:attributes="value folder/folder_id" /></td>
-								<td><i class="icon icon-folder-close">&#160;</i></td>
+								<td><a tal:attributes="href folder/url; title folder/name"><i class="icon icon-folder-close">&#160;</i></a></td>
 								<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
-								<td>Folder</td>
-								<td />
-								<td />
-								<td />
-								<td>${folder/created} ago</td>
+								<td><span class="muted">folder</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">--</span></td>
+								<td><span class="muted">${folder/created} ago</span></td>
+								<td>
+									<p class="text-right">
+										<a href="#" title="Rename"><i class="icon-edit">&#160;</i></a>
+										<a href="#" title="Delete"><i class="icon-remove">&#160;</i></a>
+									</p>
+								</td>
 							</tr>
 						</tal:block>
 						<tal:block tal:repeat="file files">
 							<tr>
 								<td><input type="checkbox" name="file[]" tal:attributes="value file/file_id" /></td>
-								<td><i class="icon icon-file">&#160;</i></td>
+								<td><a tal:attributes="href file/url; title file/name"><i class="icon icon-file">&#160;</i></a></td>
 								<td><a tal:attributes="href file/url" tal:content="file/name" /></td>
-								<td tal:content="file/mime_type" />
-								<td tal:content="file/size" />
-								<td tal:content="file/hits" />
-								<td>${file/bandwidth} (${file/bandwidth_mtd})</td>
-								<td>${file/created} ago</td>
+								<td><span class="muted" tal:content="file/mime_type" /></td>
+								<td><span class="muted" tal:content="file/size" /></td>
+								<td><span class="muted" tal:content="file/hits" /></td>
+								<td><span class="muted" tal:content="file/bandwidth_mtd" /></td>
+								<td><span class="muted">${file/created} ago</span></td>
+								<td>
+									<p class="text-right">
+										<a href="#" title="Manage"><i class="icon-wrench">&#160;</i></a>
+										<a href="#" title="Download"><i class="icon-download-alt">&#160;</i></a>
+										<a href="#" title="Rename"><i class="icon-remove">&#160;</i></a>
+									</p>
+								</td>
 							</tr>
 						</tal:block>
-						<tal:block tal:condition="php: !count(folders) AND !count(files)">
-							<tr>
-								<td colspan="8">No files or folders exist!</td>
-							</tr>
-						</tal:block>
-					</table>
-					<div style="padding: 10px 0">
-						<div style="padding: 5px;">
-							<input type="checkbox" name="confirm_file_deletion" value="true" /> Confirm File Deletion
+					</tbody>
+				</table>
+
+				<div id="options">
+					<p>Select an action with the selected items above</p>
+					<div class="tabbable">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#action-move" data-toggle="tab">Move</a></li>
+							<!--<li><a href="#action-publish" data-toggle="tab">Publish</a></li>-->
+							<li><a href="#action-delete" data-toggle="tab">Delete</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane fade active in" id="action-move">
+								<div class="control-group">
+									<label class="control-label">Destination</label>
+									<div class="controls">
+										<input class="span8" type="text" name="destination_path" placeholder="Destination, EG: /Documents/My Folder" />
+									</div>
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<input type="hidden" name="action" value="move" />
+										<button type="submit" class="btn btn-primary">Move</button>
+									</div>
+								</div>
+							</div>
+							<!--<div class="tab-pane fade" id="action-publish">
+								<div class="control-group">
+									<div class="controls">
+										<input type="hidden" name="action" value="publish" />
+										<button type="submit" class="btn btn-primary">Submit</button>
+									</div>
+								</div>
+							</div>-->
+							<div class="tab-pane fade" id="action-delete">
+								<input type="hidden" name="action" value="delete" />
+								<div class="control-group">
+									<label class="checkbox">
+										<input type="checkbox" name="confirm_file_deletion" /> Confirm File Deletion
+									</label>
+								</div>
+								<div class="control-group">
+									<label class="checkbox">
+										<input type="checkbox" name="confirm_folder_deletion" /> Confirm Folder Deletion (Removes all files/folder within)
+									</label>
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<button type="submit" class="btn btn-primary">Submit</button>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div style="padding: 5px;">
-							<input type="checkbox" name="confirm_folder_deletion" value="true" />Confirm Folder Deletion (Recursive)
-						</div>
-						<div style="padding: 5px;">
-							Destination Path:
-							<input type="text" name="destination_path" value="" />
-						</div>
-						<div style="padding: 5px;">
-							<select name="action">
-								<option value="move">Move Select Files/Folders to Destination Path</option>
-								<option value="delete">Delete Selected</option>
-							</select>
-						</div>
-						<div style="padding: 5px;">
-							<input type="submit" value="Submit" />
-						</div>
-					</div>
-				</form>
-				<br />
-				<h3>Create Folder</h3>
-				<form method="post" tal:attributes="action url_action">
-				<input type="hidden" name="create_folder" value="true" />
-				<div>
-					<div class="formRow">
-						<input type="text" id="folder" name="folder" />
-						<input type="submit" name="create" value="Create" />
-						<br />
 					</div>
 				</div>
-				</form>
-			</div>
+			</form>
+			<form method="post" tal:attributes="action url_action" class="form-horizontal">
+				<input type="hidden" name="create_folder" value="true" />
+				<div class="input-append">
+					<input type="text" name="folder" />
+					<button class="btn" type="submit">Create Folder</button>
+				</div>
+			</form>
 		</div>
 	</tal:block>
 </tal:block>

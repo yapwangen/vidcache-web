@@ -15,6 +15,12 @@ Tpl::_get()->set(array(
 	,'url'				=>	Config::get('url','url')
 	,'theme_path'		=>	Tpl::_get()->uri
 	,'copyright'		=>	'© '.date('Y').' '.Config::get('site_name')
+	,'meta_keywords'	=>	Config::get('meta_keywords')
+	,'meta_description'	=>	Config::get('meta_description')
+	//routing stuff for selective nav handling
+	,'act'				=>	get('act')
+	,'do'				=>	get('do')
+	,'fire'				=>	get('fire')
 ));
 
 //set delayed alerts

@@ -1,0 +1,17 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    eSited LLC -- Development -- @esited
+
+# THANKS
+
+    Bryan Tong <contact@nullivex.com>
+	Tony Butler <spudz76@gmail.com>
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    Normalize.css, jQuery, Modernizr
+	Debian Squeeze, PHP5, MySQL5

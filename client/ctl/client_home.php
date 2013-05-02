@@ -33,8 +33,9 @@ if(get('upload')){
 	if($vc->pathExists($root_path) == 'none')
 		mkdir(VCFS::getPrefix().$root_path,true);
 	//upload files
-	foreach($_FILES['file']['tmp_name'] as $key => $tmp_name){
-		$upload_path = $root_path.$path.'/'.$_FILES['file']['name'][$key];
+	//foreach($_FILES['file']['tmp_name'] as $key => $tmp_name){
+		$tmp_name = $_FILES['file']['tmp_name'];
+		$upload_path = $root_path.$path.'/'.$_FILES['file']['name'];
 		//upload the file
 		move_uploaded_file($tmp_name,VCFS::getPrefix().$upload_path);
 		//get info about the file
@@ -57,7 +58,7 @@ if(get('upload')){
 			$rv = $vc->pathPublish($upload_path,$preview_path,Config::get('vidcache','embed_tpl_handle'));
 			FS::fileStoreEmbedHandle($rv['embed_handle'],$upload_path);
 		}
-	}
+	//}
 	//update our local cache
 	//	we start a new instance here to workaround an xport bug with encoding types
 	//	reported here: https://github.com/openlss/lib-xport/issues/1

@@ -1,23 +1,9 @@
 <tal:block metal:use-macro="structure.xhtml/page">
 	<tal:block metal:fill-slot="content">
-		<div class="lm">
-			<div class="nn">
-				<div class="nlogo">
-					<a tal:attributes="href url/home"><img src="images/logo.png" /></a>
-				</div>
-			</div>
-			<div class="clear"></div>
-			<div class="cc">
-				<tal:block tal:condition="exists: global/alert" metal:use-macro="alert.xhtml/alert" />
-				<h1>News</h1>
-				<br />
-				<tal:block tal:repeat="row news">
-					<h2 tal:content="row/title" />
-					<p><span class="date" tal:content="row/posted" /></p>
-					<div class="entry" tal:content="structure row/content" />
-					<br />
-				</tal:block>
-			</div>
-		</div>
+		<tal:block tal:repeat="row news">
+			<h2 tal:content="row/title" />
+			<div class="muted"><span class="date" tal:content="php: date('m/d/Y',row['posted'])" /></div>
+			<p tal:content="structure row/content" />
+		</tal:block>
 	</tal:block>
 </tal:block>

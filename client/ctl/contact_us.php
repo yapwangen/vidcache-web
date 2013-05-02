@@ -38,5 +38,6 @@ if(post('contact')){
 
 $params = array_merge(ContactUs::params(),$overrides,post());
 $params['title'] = $title;
+$params['url_action'] = $url;
 
 Tpl::_get()->output('contact_us',$params);

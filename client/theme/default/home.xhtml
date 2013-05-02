@@ -1,34 +1,22 @@
 <tal:block metal:use-macro="structure.xhtml/page">
 	<tal:block metal:fill-slot="content">
-		<div class="logo">
-			<a tal:attributes="href url/home"><img src="images/logo.png" /></a>
+		<div class="plzreg clearfix">
+			<a tal:attributes="href url/register" class="pull-right btn btn-large btn-danger">Register Today</a>
+			Join the fastest growing viral video sharing website on the internet
 		</div>
-		<div class="n">
-			<div class="t">
-				<span>Local File</span>
-				<a tal:attributes="href url/register">Remote File</a>
-				<a tal:attributes="href url/register">Video Import</a>
-			</div>
-			<div class="clear"></div>
-			<div class="u">
-				<form method="post" tal:attributes="action url/file_upload_public" enctype="multipart/form-data">
-				<div>
-					<div class="formRow">
-						<label for="file" class="floated">File: </label>
-						<input type="file" id="file" name="file[]" multiple="multiple" /><br />
-					</div>
-
-					<div class="formRow">
-						<input type="submit" name="upload" class="button btn1" value="Upload" />
-					</div>
-					
-					<div class="formRow" style="text-align: center; margin-top: 5px;">
-						Unlimited Video Uploads and Streaming!
-					</div>
-
-				</div>
-				</form>
-			</div>
+		<div class="info">
+			<p>
+				Videokoo offers free unlimited video uploading and streaming.
+				Sign up today and take advantage of all these great features.
+			</p>
+			<ul>
+				<li>Backed by the Vidcache CDN streaming platform</li>
+				<li>File and folder tree management</li>
+				<li><b>Unlimited uploading</b></li>
+				<li><b>Unlimited streaming</b></li>
+				<li>Video importing from other major websites</li>
+				<li>And more!</li>
+			</ul>
 		</div>
 	</tal:block>
 </tal:block>
