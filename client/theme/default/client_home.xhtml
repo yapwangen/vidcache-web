@@ -28,7 +28,7 @@
 		<form tal:attributes="action url_action_upload" method="post" class="dropzone" id="file-upload">&#160;</form>
 
 		<div id="file-manager-wrapper">
-			<form tal:attributes="action url_action" method="get">
+			<form tal:attributes="action url_action" method="post">
 				<table class="table table-striped table-bordered" id="file-manager">
 					<thead>
 						<tr>
@@ -84,7 +84,7 @@
 					</tbody>
 				</table>
 
-				<div id="options">
+				<div id="options" style="display: none;">
 					<p>Select an action with the selected items above</p>
 					<div class="tabbable">
 						<ul class="nav nav-tabs">

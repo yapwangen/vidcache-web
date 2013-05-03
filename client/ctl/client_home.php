@@ -33,32 +33,30 @@ if(get('upload')){
 	if($vc->pathExists($root_path) == 'none')
 		mkdir(VCFS::getPrefix().$root_path,true);
 	//upload files
-	//foreach($_FILES['file']['tmp_name'] as $key => $tmp_name){
-		$tmp_name = $_FILES['file']['tmp_name'];
-		$upload_path = $root_path.$path.'/'.$_FILES['file']['name'];
-		//upload the file
-		move_uploaded_file($tmp_name,VCFS::getPrefix().$upload_path);
-		//get info about the file
-		$info = $vc->pathInfo($upload_path);
-		$mime_type = $info['file']['mime_type'];
-		//check our mimetype
-		if(in_array($mime_type,Config::get('embed','types'))){
-			$preview_path = null;
-			//videos are a bit different and need a thumbnail first
-			if(in_array($mime_type,Config::get('embed','video_types'))){
-				//create the thumbnail
-				try {
-					$rv = $vc->pathGenPreview($upload_path);
-					$preview_path = $rv['preview_path'];
-				} catch(Exception $e){
-					//ignore it
-				}
+	$tmp_name = $_FILES['file']['tmp_name'];
+	$upload_path = $root_path.$path.'/'.$_FILES['file']['name'];
+	//upload the file
+	move_uploaded_file($tmp_name,VCFS::getPrefix().$upload_path);
+	//get info about the file
+	$info = $vc->pathInfo($upload_path);
+	$mime_type = $info['file']['mime_type'];
+	//check our mimetype
+	if(in_array($mime_type,Config::get('embed','types'))){
+		$preview_path = null;
+		//videos are a bit different and need a thumbnail first
+		if(in_array($mime_type,Config::get('embed','video_types'))){
+			//create the thumbnail
+			try {
+				$rv = $vc->pathGenPreview($upload_path);
+				$preview_path = $rv['preview_path'];
+			} catch(Exception $e){
+				//ignore it
 			}
-			//publish it
-			$rv = $vc->pathPublish($upload_path,$preview_path,Config::get('vidcache','embed_tpl_handle'));
-			FS::fileStoreEmbedHandle($rv['embed_handle'],$upload_path);
 		}
-	//}
+		//publish it
+		$rv = $vc->pathPublish($upload_path,$preview_path,Config::get('vidcache','embed_tpl_handle'));
+		FS::fileStoreEmbedHandle($rv['embed_handle'],$upload_path);
+	}
 	//update our local cache
 	//	we start a new instance here to workaround an xport bug with encoding types
 	//	reported here: https://github.com/openlss/lib-xport/issues/1

@@ -81,6 +81,8 @@ div.info ul {
 .dropzone .default.message span {display: block; text-align: center;}
 
 iframe.watch {width: 100%; height: 600px;}
+iframe.listen {width: 100%; height: 120px;}
+iframe.view {width: 600px; height: 400px;}
 .tabbable.share {height: 120px;}
 .tab-content.share {overflow-x: hidden; overflow-y: hidden;}
 .share-code {width 800px; overflow-x: scroll;}

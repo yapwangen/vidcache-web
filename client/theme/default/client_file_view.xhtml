@@ -36,7 +36,7 @@
 			</div>
 		</tal:block>
 		<tal:block tal:condition="php: fire == 'listen'">
-			<iframe tal:attributes="src file/url_server_embed" class="watch" />
+			<iframe tal:attributes="src file/url_server_embed" class="listen" />
 			<div class="pull-right">
 				<a tal:attributes="href file/url_server_download; title file/name" class="btn btn-primary">
 					<i class="icon-white icon-download">&#160;</i> Download
@@ -71,7 +71,7 @@
 			</div>
 		</tal:block>
 		<tal:block tal:condition="php: fire == 'view'">
-			<iframe tal:attributes="src file/url_server_static" class="watch" />
+			<iframe tal:attributes="src file/url_server_static" class="view" />
 			<div class="pull-right">
 				<a tal:attributes="href file/url_server_download; title file/name" class="btn btn-primary">
 					<i class="icon-white icon-download">&#160;</i> Download
