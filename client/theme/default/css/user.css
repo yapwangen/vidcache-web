@@ -77,8 +77,8 @@ div.info ul {
 .folder-path {line-height: 30px;}
 
 /* dropzone post-formatting */
-.dropzone {min-height: 75px;}
-.dropzone .default.message span {display: block; text-align: center;}
+.dropzone {min-height: 75px; background: url(../images/upload_bg.png) center no-repeat;}
+.dropzone .default.message span {display: none; text-align: center;}
 
 iframe.watch {width: 100%; height: 600px;}
 iframe.listen {width: 100%; height: 120px;}

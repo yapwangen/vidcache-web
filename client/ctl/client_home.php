@@ -154,7 +154,7 @@ if(get('datatables') == 'true'){
 	$result = $files;
 	$result['iTotalRecords'] += $folders['iTotalRecords'];
 	$result['iTotalDisplayRecords'] += $folders['iTotalDisplayRecords'];
-	$result['aaData'] = array_merge($result['aaData'],$folders['aaData']);
+	$result['aaData'] = array_merge($folders['aaData'],$result['aaData']);
 	echo json_encode($result);
 	exit;
 }
