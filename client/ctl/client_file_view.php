@@ -18,6 +18,7 @@ FS::updateCache($vc);
 
 $params = array();
 $params['file'] = $file = FS::fetchFileByHandleOrEmbedHandle($handle);
+// var_dump($file); exit;
 if(!$file)
 	throw new Exception('File not found');
 //merge in urls
@@ -26,4 +27,6 @@ $params['file'] = array_merge($params['file'],FS::URLsByFile($file));
 $params['fire'] = get('fire');
 //format stuff
 $params['file']['size'] = format_bytes($params['file']['size']);
+$params['file']['hits'] = $file['hits_lifetime'];
+
 Tpl::_get()->output('client_file_view',$params);

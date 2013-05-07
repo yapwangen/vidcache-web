@@ -9,8 +9,6 @@ $this->addCss('css/user.css');
 
 //datatables
 $this->addJs('js/vendor/jquery.dataTables.min.js');
-$this->addJs('js/vendor/ZeroClipboard.js');
-$this->addJs('js/vendor/TableTools.min.js');
 $this->addJs('js/vendor/datatables.bootstrap.js');
 
 //dropzone

@@ -15,6 +15,9 @@
 			<!--CSS Files-->
 			<tal:block tal:condition="exists: global/css" tal:content="structure global/css" />
 
+			<!--JavaScript Files-->
+			<tal:block tal:condition="exists: global/js" tal:content="structure global/js" />
+
 		</head>
 		<body>
 			<tal:block tal:condition="stub/header">
@@ -100,9 +103,6 @@
 
 			<!--Debug info-->
 			<tal:block tal:condition="exists: global/debug" metal:use-macro="debug.xhtml/debug" />
-
-			<!--JavaScript Files-->
-			<tal:block tal:condition="exists: global/js" tal:content="structure global/js" />
 
 		</body>
 	</html>

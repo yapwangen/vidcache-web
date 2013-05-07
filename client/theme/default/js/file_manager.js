@@ -6,22 +6,25 @@ $(document).ready(function() {
 /* Table initialisation */
 $(document).ready(function() {
 
-	$('#file-manager').dataTable( {
+	file_manager = $('#file-manager').dataTable( {
 		 "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
 		,"sPaginationType": "bootstrap"
 		,"oLanguage": {
 			"sLengthMenu": "_MENU_ records per page"
 		}
+		,"bProcessing":	false
+		,"bServerSide": true
+		,"sAjaxSource":	file_manager_ajax_source
 		,"aoColumns": [
-			 {"bSortable": false}
-			,{"bSortable": false}
+			 {"bSortable": false, "bSearchable": false}
+			,{"bSortable": false, "bSearchable": false}
 			,null
-			,null
-			,null
-			,null
-			,null
-			,null
-			,{"bSortable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSortable": false, "bSearchable": false}
 		]
 	} );
 } );
@@ -59,5 +62,9 @@ $(document).ready(function(){
 	Dropzone.options.fileUpload = {
 		 maxFilesize: 4096 //4gb
 		,parallelUploads: 8
+		,complete:	function(file,resp){
+			file_manager.fnDraw();
+			return true;
+		}
 	}
 });

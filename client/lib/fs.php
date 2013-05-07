@@ -4,6 +4,7 @@ use \LSS\Config;
 use \LSS\Db;
 use \LSS\Url;
 use \Vidcache\SDK;
+use \Vidcache\ModelService;
 
 abstract class FS {
 
@@ -29,6 +30,45 @@ abstract class FS {
 			'SELECT * FROM `folders` WHERE `path` = ?'
 			,array($path)
 		);
+	}
+	
+	public static function fetchFoldersByParentDataTables($columns,$where,$order,$limit,$path){
+		$folder = self::fetchFolderByPath(rtrim($path,'/'));
+		$result = Db::_get()->fetchAll(
+				 ' SELECT SQL_CALC_FOUND_ROWS'
+				.' *,"--" AS `type`,"--" AS `size`, "--" AS `hits`, "--" AS `transfer`'
+				.' FROM `folders` '
+				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' `parent_folder_id` = ?'
+				.$order
+				.$limit
+			,array_merge($where[1],array($folder['folder_id']))
+		);
+		$count_result = Db::_get()->fetch('SELECT FOUND_ROWS() AS `row_count`');
+		$count_total = Db::_get()->fetch(
+			'SELECT count(*) AS `row_count` FROM `folders` WHERE `parent_folder_id` = ?'
+			,array($folder['folder_id'])
+		);
+		return array($result,$count_result['row_count'],$count_total['row_count']);
+	}
+
+	public static function fetchFilesByParentDataTables($columns,$where,$order,$limit,$path){
+		$folder = self::fetchFolderByPath(rtrim($path,'/'));
+		$sql =	 ' SELECT SQL_CALC_FOUND_ROWS'
+				.'	f.*,feh.handle as `embed_handle`, fh.handle as `file_handle`'
+				.' FROM `files` AS f'
+				.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
+				.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
+				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' f.folder_id = ?'
+				.$order
+				.$limit;
+		$vars = array_merge($where[1],array($folder['folder_id']));
+		$result = Db::_get()->fetchAll($sql,$vars);
+		$count_result = Db::_get()->fetch('SELECT FOUND_ROWS() AS `row_count`');
+		$count_total = Db::_get()->fetch(
+			'SELECT count(*) AS `row_count` FROM `files` WHERE `folder_id` = ?'
+			,array($folder['folder_id'])
+		);
+		return array($result,$count_result['row_count'],$count_total['row_count']);
 	}
 
 	public static function fetchFileByPath($path){
@@ -166,20 +206,20 @@ abstract class FS {
 		return Db::_get()->insert(
 			'files'
 			,array(
-				 'file_id'		=>	$file['client_file_id']
-				,'folder_id'	=>	$file['client_folder_id']
-				,'file_chksum'	=>	$file['file_chksum']
-				,'path'			=>	$file['path']
-				,'name'			=>	$file['name']
-				,'mime_type'	=>	$file['mime_type']
-				,'size'			=>	$file['size']
-				,'hits'			=>	$file['hits']
-				,'hits_mtd'		=>	$file['hits_this_month']
-				,'bandwidth'	=>	$file['bandwidth']
-				,'bandwidth_mtd'=>	$file['bandwidth_this_month']
-				,'created'		=>	$file['created']
-				,'updated'		=>	$file['updated']
-				,'deleted'		=>	$file['deleted']
+				 'file_id'				=>	$file['client_file_id']
+				,'folder_id'			=>	$file['client_folder_id']
+				,'file_chksum'			=>	$file['file_chksum']
+				,'path'					=>	$file['path']
+				,'name'					=>	$file['name']
+				,'mime_type'			=>	$file['mime_type']
+				,'size'					=>	$file['size']
+				,'hits_this_month'		=>	$file['hits_this_month']
+				,'bytes_this_month'		=>	$file['bytes_this_month']
+				,'hits_lifetime'		=>	$file['hits_lifetime']
+				,'bytes_lifetime'		=>	$file['bytes_lifetime']
+				,'created'				=>	$file['created']
+				,'updated'				=>	$file['updated']
+				,'deleted'				=>	$file['deleted']
 		));
 	}
 

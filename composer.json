@@ -27,7 +27,6 @@
 	,"require":	{
 		 "php":							">=5.3.2"
 		,"swiftmailer/swiftmailer":		"v4.3.0"
-		,"lampjunkie/php-datatables":	"dev-master"
 		,"esited/vidcache-sdk":			"dev-master"
 		,"openlss/core-boot":			"dev-master"
 		,"openlss/func-debug":			"dev-master"
@@ -41,6 +40,8 @@
 		,"openlss/lib-account":			"dev-master"
 		,"openlss/lib-config":			"dev-master"
 		,"openlss/lib-db":				"dev-master"
+		,"openlss/lib-datamodel":		"dev-master"
+		,"openlss/lib-datatables":		"dev-master"
 		,"openlss/lib-router":			"dev-master"
 		,"openlss/lib-session":			"dev-master"
 		,"openlss/lib-tpl":				"dev-master"

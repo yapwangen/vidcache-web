@@ -1,5 +1,6 @@
 <?php
 use \LSS\Config;
+use \LSS\DataTables;
 use \LSS\Tpl;
 use \LSS\Url;
 use \Vidcache\Client\Session;
@@ -23,6 +24,9 @@ FS::updateCache($vc);
 //setup path info
 $root_path = '/home/'.$client_id;
 $path = !is_null(get('path')) ? get('path') : '';
+
+//set the page url
+$url = Url::client_home_path($path);
 
 //make sure the root path exists
 if($vc->pathExists($root_path) == 'none')
@@ -64,8 +68,9 @@ if(get('upload')){
 	$vc->connect(Config::get('vidcache','api_key'));
 	FS::updateCache($vc);
 	//done
-	alert('Files uploaded successfully',true,true);
-	echo 'http://'.$_SERVER['HTTP_HOST'].Url::client_home_path($path);
+	// alert('Files uploaded successfully',true,true);
+	echo 'success';
+	// echo 'http://'.$_SERVER['HTTP_HOST'].Url::client_home_path($path);
 	exit;
 }
 
@@ -129,14 +134,42 @@ if(post('update_hidden')){
 	$_SESSION['show_hidden_objects'] = post('show_hidden') ? true : false;
 }
 
+//data table loading
+if(get('datatables') == 'true'){
+	$files = DataTables::_get()
+		->setColumns(array('checkbox','icon','name','mime_type','size','hits_lifetime','bytes_this_month','created','actions'))
+		->setDataCallback('\Vidcache\Client\FS::fetchFilesByParentDatatables',$root_path.$path)
+		->setDataModel('\Vidcache\Client\FileDataModel')
+		->setupFromRequest()
+		->process()
+		->getResult();
+	$folders = DataTables::_get()
+		->setColumns(array('checkbox','icon','name','type','size','hits','transfer','created','actions'))
+		->setDataCallback('\Vidcache\Client\FS::fetchFoldersByParentDatatables',$root_path.$path)
+		->setDataModel('\Vidcache\Client\FolderDataModel')
+		->setupFromRequest()
+		->process()
+		->getResult();
+	//build merged result
+	$result = $files;
+	$result['iTotalRecords'] += $folders['iTotalRecords'];
+	$result['iTotalDisplayRecords'] += $folders['iTotalDisplayRecords'];
+	$result['aaData'] = array_merge($result['aaData'],$folders['aaData']);
+	echo json_encode($result);
+	exit;
+}
+
 $show_hidden = session('show_hidden_objects');
 
 $params = array();
+
+//setup basic params
 $params['is_show_hidden'] = $show_hidden;
-$params['url_action'] = Url::client_home_path($path);
+$params['url_action'] = $url;
 $params['url_action_upload'] = $params['url_action'].'&upload=true';
 $params['files'] = $params['folders'] = array();
 
+//build the breadcrumb path
 $params['path'] = array();
 $params['path'][] = array('url'=>Url::client_home(),'name'=>'Root');
 $built = '';
@@ -148,23 +181,5 @@ foreach(explode('/',ltrim($path,'/')) as $v){
 }
 unset($built);
 
-$info['files'] = FS::fetchFilesByParent($root_path.$path);
-$info['folders'] = FS::fetchFoldersByParent($root_path.$path);
-foreach($info['files'] as $file){
-	if(strpos($file['name'],'.') === 0 && !$show_hidden) continue;
-	$file['created'] = age($file['created']);
-	$file['size'] = format_bytes($file['size']);
-	$file['bandwidth'] = format_bytes($file['bandwidth']);
-	$file['bandwidth_mtd'] = format_bytes($file['bandwidth_mtd']);
-	if(!empty($file['embed_handle'])) $url_handle = $file['embed_handle'];
-	else $url_handle = $file['handle'];
-	$file['url'] = Url::client_file_view(FS::actionType($file['mime_type']),$url_handle);
-	$params['files'][] = $file;
-}
-foreach($info['folders'] as $folder){
-	if(strpos($folder['name'],'.') === 0 && !$show_hidden) continue;
-	$folder['url'] = Url::client_home_path(str_replace($root_path,'',$folder['path']));
-	$folder['created'] = age($folder['created']);
-	$params['folders'][] = array_merge(array('url'=>''),$folder);
-}
+//output the template
 Tpl::_get()->output('client_home',$params);

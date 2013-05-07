@@ -34,25 +34,25 @@
 						<tr>
 							<th><input type="checkbox" /></th>
 							<th></th>
-							<th>Name</th>
+							<th style="width: 25%;">Name</th>
 							<th>Type</th>
 							<th>Size</th>
 							<th>Hits</th>
 							<th>Tranfer*</th>
 							<th>Uploaded</th>
-							<th></th>
+							<th style="width: 8%;"></th>
 						</tr>
 					</thead>
-					<tbody>
+					<!--<tbody>
 						<tal:block tal:repeat="folder folders">
 							<tr>
 								<td><input type="checkbox" name="folder[]" tal:attributes="value folder/folder_id" /></td>
 								<td><a tal:attributes="href folder/url; title folder/name"><i class="icon icon-folder-close">&#160;</i></a></td>
 								<td><a tal:attributes="href folder/url" tal:content="folder/name" /></td>
 								<td><span class="muted">folder</span></td>
-								<td><span class="muted">--</span></td>
-								<td><span class="muted">--</span></td>
-								<td><span class="muted">--</span></td>
+								<td><span class="muted"></span></td>
+								<td><span class="muted"></span></td>
+								<td><span class="muted"></span></td>
 								<td><span class="muted">${folder/created} ago</span></td>
 								<td>
 									<p class="text-right">
@@ -81,7 +81,7 @@
 								</td>
 							</tr>
 						</tal:block>
-					</tbody>
+					</tbody>-->
 				</table>
 
 				<div id="options" style="display: none;">
@@ -145,5 +145,6 @@
 				</div>
 			</form>
 		</div>
+		<script type="text/javascript">var file_manager_ajax_source = "${url_action}&datatables=true";</script>
 	</tal:block>
 </tal:block>
