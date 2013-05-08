@@ -1,0 +1,7 @@
+#!/bin/bash
+git_root=$(dirname $(git rev-parse --git-dir))
+[ "${git_root}" == "." ] && git_root="$(pwd)"
+echo "Running composer in gitroot:${git_root}"
+cd "${git_root}"
+/usr/bin/composer update -o
+exit 0

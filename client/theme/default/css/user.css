@@ -9,7 +9,7 @@ a:hover {text-decoration:none}
 
 /* header */
 .nav a {margin-top: 2px;}
-.navbar .nav>li:first-child>a {padding-left: 0px;}
+/*.navbar .nav>li:first-child>a {padding-left: 0px;}*/
 .navbar .nav .active {font-weight: bold;}
 
 #header {height: 60px;}

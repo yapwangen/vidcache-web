@@ -1,0 +1,27 @@
+#!/bin/bash
+#syntax check all changed files
+for f in $(git diff --cached --name-only | sort); do
+	#note this silently ignores "file not found" errors, assuming they are deletes or renames
+	if [ "$(grep -c "<?php" "${f}" 2>/dev/null)$(grep -c "bin.bash" "${f}" 2>/dev/null)" == "10" ]; then
+		echo "[PHP-Lint] ${f}"
+		result=$(php -l "${f}" 2>&1)
+		if [ "$?" -ne 0 ]; then
+			result=$(echo "${result}" | sed 's@^@> @g')
+			echo -e "COMMIT REJECTED Found PHP syntax errors in ${f}:\n${result}\nPlease fix them before committing."
+			exit 1
+		fi
+	fi
+done
+#rebuild autoloader
+git_root=$(dirname $(git rev-parse --git-dir))
+[ "${git_root}" == "." ] && git_root="$(pwd)"
+echo "Running composer in gitroot:${git_root}"
+cd "${git_root}"
+/usr/bin/composer dumpautoload -o
+#run phpunit tests
+#result=$(phpunit test 2>&1)
+#if [ "$?" -ne 0 ]; then
+#	echo -e "COMMIT REJECTED Unit testing failed:\n${result}\nPlease fix errors before committing."
+#	exit 1
+#fi
+exit 0
