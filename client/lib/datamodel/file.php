@@ -1,8 +1,9 @@
 <?php
-namespace Vidcache\Client;
+namespace Vidcache\Client\DataModel;
 use \LSS\Url;
+use \Vidcache\Client\FS;
 
-class FileDataModel extends \LSS\DataModel {
+class File extends \LSS\DataModel {
 
 	public function getCheckbox(){
 		return '<input type="checkbox" name="file[]" value="'.$this->getFileId().'" />';

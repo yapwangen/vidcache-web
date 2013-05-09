@@ -1,8 +1,10 @@
 <?php
-namespace Vidcache\Client;
+namespace Vidcache\Client\DataModel;
 use \LSS\Url;
+use \Vidcache\Client\FS;
+use \Vidcache\Client\Session;
 
-class FolderDataModel extends \LSS\DataModel {
+class Folder extends \LSS\DataModel {
 
 	public function getCheckbox(){
 		return '<input type="checkbox" name="folder[]" value="'.$this->getFolderId().'" />';
@@ -28,7 +30,7 @@ class FolderDataModel extends \LSS\DataModel {
 		return '--';
 	}
 
-	public function getUploaded(){
+	public function getCreated(){
 		return \age($this->data['created']).' ago';
 	}
 

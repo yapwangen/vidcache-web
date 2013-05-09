@@ -36,7 +36,7 @@
 								</ul>
 								<tal:block tal:condition="exists:global/client_loggedin">
 									<ul class="nav pull-right">
-										<li class="active"><a tal:attributes="href url/client_home" tal:content="global/client/email" /></li>
+										<li><a tal:attributes="href url/client_home" tal:content="global/client/email" /></li>
 										<li><a tal:attributes="href url/logout">Logout</a></li>
 									</ul>
 								</tal:block>

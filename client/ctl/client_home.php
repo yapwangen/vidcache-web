@@ -7,6 +7,8 @@ use \Vidcache\Client\Session;
 use \Vidcache\Client\FS;
 use \Vidcache\SDK\VCFS;
 use \Vidcache\SDK;
+use \Vidcache\Client\DataModel\File;
+use \Vidcache\Client\DataModel\Folder;
 
 if(!Session::isLoggedIn())
 	redirect(Url::login());
@@ -139,14 +141,14 @@ if(get('datatables') == 'true'){
 	$files = DataTables::_get()
 		->setColumns(array('checkbox','icon','name','mime_type','size','hits_lifetime','bytes_this_month','created','actions'))
 		->setDataCallback('\Vidcache\Client\FS::fetchFilesByParentDatatables',$root_path.$path)
-		->setDataModel('\Vidcache\Client\FileDataModel')
+		->setDataModel('\Vidcache\Client\DataModel\File')
 		->setupFromRequest()
 		->process()
 		->getResult();
 	$folders = DataTables::_get()
 		->setColumns(array('checkbox','icon','name','type','size','hits','transfer','created','actions'))
 		->setDataCallback('\Vidcache\Client\FS::fetchFoldersByParentDatatables',$root_path.$path)
-		->setDataModel('\Vidcache\Client\FolderDataModel')
+		->setDataModel('\Vidcache\Client\DataModel\Folder')
 		->setupFromRequest()
 		->process()
 		->getResult();
