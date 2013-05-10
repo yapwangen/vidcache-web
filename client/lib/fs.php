@@ -34,15 +34,15 @@ abstract class FS {
 	
 	public static function fetchFoldersByParentDataTables($columns,$where,$order,$limit,$path){
 		$folder = self::fetchFolderByPath(rtrim($path,'/'));
-		$result = Db::_get()->fetchAll(
-				 ' SELECT SQL_CALC_FOUND_ROWS'
+		$sql =  ' SELECT SQL_CALC_FOUND_ROWS'
 				.' *,"--" AS `type`,"--" AS `size`, "--" AS `hits`, "--" AS `transfer`'
 				.' FROM `folders` '
 				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' `parent_folder_id` = ?'
 				.$order
-				.$limit
-			,array_merge($where[1],array($folder['folder_id']))
-		);
+				.$limit;
+		$vars = array_merge($where[1],array($folder['folder_id']));
+		$result = Db::_get()->fetchAll($sql,$vars);
+		// var_dump($result);
 		$count_result = Db::_get()->fetch('SELECT FOUND_ROWS() AS `row_count`');
 		$count_total = Db::_get()->fetch(
 			'SELECT count(*) AS `row_count` FROM `folders` WHERE `parent_folder_id` = ?'
