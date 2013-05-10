@@ -3,32 +3,6 @@ $(document).ready(function() {
 	$('#options').hide();
 });
 
-/* Table initialisation */
-$(document).ready(function() {
-
-	file_manager = $('#file-manager').dataTable( {
-		 "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
-		,"sPaginationType": "bootstrap"
-		,"oLanguage": {
-			"sLengthMenu": "_MENU_ records per page"
-		}
-		,"bProcessing":	false
-		,"bServerSide": true
-		,"sAjaxSource":	file_manager_ajax_source
-		,"aoColumns": [
-			 {"bSortable": false, "bSearchable": false}
-			,{"bSortable": false, "bSearchable": false}
-			,null
-			,{"bSearchable": false}
-			,{"bSearchable": false}
-			,{"bSearchable": false}
-			,{"bSearchable": false}
-			,{"bSearchable": false}
-			,{"bSortable": false, "bSearchable": false}
-		]
-	} );
-} );
-
 /* Option Handling */
 var option_control = '#file-manager > thead > tr > th > input[type=checkbox]';
 var option_elements = '#file-manager > tbody > tr > td > input[type=checkbox]';
@@ -42,7 +16,7 @@ var showOptions = function(){
 }
 
 /* Only show options when stuff is selected */
-$(document).ready(function(){
+var applyOptionListeners = function(){
 	//single checking
 	$(option_elements).click(showOptions);
 	//mass checking
@@ -54,8 +28,8 @@ $(document).ready(function(){
 		}
 		showOptions();
 	});
-});
-
+}
+$(document).ready(applyOptionListeners);
 
 /* Configure Dropzone */
 $(document).ready(function(){
@@ -68,3 +42,29 @@ $(document).ready(function(){
 		}
 	}
 });
+
+/* Table initialisation */
+$(document).ready(function() {
+	file_manager = $('#file-manager').dataTable( {
+		 "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+		,"sPaginationType": "bootstrap"
+		,"oLanguage": {
+			"sLengthMenu": "_MENU_ records per page"
+		}
+		,"bProcessing":	false
+		,"bServerSide": true
+		,"sAjaxSource":	file_manager_ajax_source
+		,"fnDrawCallback": applyOptionListeners
+		,"aoColumns": [
+			 {"bSortable": false, "bSearchable": false}
+			,{"bSortable": false, "bSearchable": false}
+			,null
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSearchable": false}
+			,{"bSortable": false, "bSearchable": false}
+		]
+	} );
+} );
