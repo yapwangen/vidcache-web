@@ -15,11 +15,11 @@ a:hover {text-decoration:none}
 #header {height: 60px;}
 #header h5 a#logo {
 	display: block;
-	width: 202px;
-	height: 32px;
+	width: 368px;
+	height: 104px;
 	text-indent: -9999px;
 	overflow: hidden;
-	background: url(../images/vklogo.png) no-repeat 0 0;
+	background: url(../images/logo.png) no-repeat 0 0;
 }
 #header .pull-left, #header .pull-right {margin: 12px 0 0 15px;}
 
