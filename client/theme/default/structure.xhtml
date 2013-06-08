@@ -36,7 +36,7 @@
 								</ul>
 								<tal:block tal:condition="exists:global/client_loggedin">
 									<ul class="nav pull-right">
-										<li><a tal:attributes="href url/client_home" tal:content="global/client/email" /></li>
+										<li><a tal:attributes="href url/client_profile" tal:content="global/client/email" /></li>
 										<li><a tal:attributes="href url/logout">Logout</a></li>
 									</ul>
 								</tal:block>
@@ -96,6 +96,9 @@
 						</div>
 						<div class="muted text-right">
 							<small>${global/stats}</small>
+							<script id="_wausbi">var _wau = _wau || []; _wau.push(["small", "pa2k9dsbs4kh", "sbi"]);(function() { var
+							s=document.createElement("script"); s.async=true;
+							s.src="http://widgets.amung.us/small.js";document.getElementsByTagName("head")[0].appendChild(s);})();</script>
 						</div>
 					</footer>
 				</div>
@@ -104,6 +107,19 @@
 			<!--Debug info-->
 			<tal:block tal:condition="exists: global/debug" metal:use-macro="debug.xhtml/debug" />
 
+			<!-- Piwik --> 
+			<script type="text/javascript">
+			var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.esited.com/" : "http://stats.esited.com/");
+			document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+			</script><script type="text/javascript">
+			try {
+			var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+			piwikTracker.trackPageView();
+			piwikTracker.enableLinkTracking();
+			} catch( err ) {}
+			</script><noscript><p><img src="http://stats.esited.com/piwik.php?idsite=9" style="border:0" alt=""
+			/></p></noscript>
+			<!-- End Piwik Tracking Code -->
 		</body>
 	</html>
 </tal:block>

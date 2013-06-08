@@ -1,0 +1,32 @@
+#!/usr/bin/php
+<?php
+require_once(__DIR__.'/boot.php');
+use \LSS\Db;
+
+dolog('Generating path hashes');
+
+//file handles
+dolog('Generating hashes for files');
+foreach(Db::_get()->fetchAll('SELECT * FROM `file_handles`') as $row){
+	$hash = md5($row['path']);
+	Db::_get()->update('file_handles','handle',$row['handle'],array('path_hash'=>$hash));
+}
+dolog('File hash generation complete');
+
+//file map
+dolog('Generating hashes for file map');
+foreach(Db::_get()->fetchAll('SELECT * FROM `file_map`') as $row){
+	$hash = md5($row['path']);
+	Db::_get()->update('file_map','chksum',$row['chksum'],array('path_hash'=>$hash));
+}
+dolog('File map hash generation complete');
+
+//file embed handle
+dolog('Generating hashes for file embed handles');
+foreach(Db::_get()->fetchAll('SELECT * FROM `file_embed_handles`') as $row){
+	$hash = md5($row['path']);
+	Db::_get()->update('file_embed_handles','path',$row['path'],array('path_hash'=>$hash));
+}
+dolog('File embed handle hash generation complete');
+
+dolog('Path hash generation complete');

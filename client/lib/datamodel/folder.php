@@ -19,15 +19,15 @@ class Folder extends \LSS\DataModel {
 	}
 
 	public function getSize(){
-		return '--';
+		return \format_bytes($this->data['size']);
 	}
 
 	public function getHits(){
-		return '--';
+		return $this->data['hits_lifetime'];
 	}
 
 	public function getTransfer(){
-		return '--';
+		return \format_bytes($this->data['bytes_this_month']);
 	}
 
 	public function getCreated(){
@@ -37,15 +37,6 @@ class Folder extends \LSS\DataModel {
 	public function getName(){
 		$path = str_replace('/home/'.Session::get('client_id'),'',$this->getPath());
 		return '<a href="'.Url::client_home_path($path).'">'.$this->data['name'].'</a>';
-	}
-
-	public function getActions(){
-		return '
-			<p class="text-right">
-				<a href="#" title="Rename"><i class="icon-edit">&#160;</i></a>
-				<a href="#" title="Delete"><i class="icon-remove">&#160;</i></a>
-			</p>
-		';
 	}
 
 }
