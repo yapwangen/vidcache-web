@@ -114,8 +114,6 @@ if(post('action') == 'delete'){
 				FS::folderDeleteByPath($delete_path);
 			}
 		}
-		//update the cache
-		FS::updateCache($vc);
 		alert('File(s) and/or Folder(s) deleted successfully!',true,true);
 		redirect(Url::client_home_path($path));
 	} catch(Exception $e){
