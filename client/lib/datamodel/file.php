@@ -28,8 +28,8 @@ class File extends \LSS\DataModel {
 		return \format_bytes($this->data['size']);
 	}
 
-	public function getHits(){
-		return $this->data['hits_this_month'];
+	public function getHitsLifetime(){
+		return $this->data['hits_lifetime'];
 	}
 
 	public function getBytesThisMonth(){

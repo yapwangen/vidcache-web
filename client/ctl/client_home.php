@@ -147,7 +147,7 @@ if(get('datatables') == 'true'){
 		->process()
 		->getResult();
 	$folders = DataTables::_get()
-		->setColumns(array('checkbox','icon','name','type','size','hits','transfer','created'))
+		->setColumns(array('checkbox','icon','name','type','size','hits_lifetime','bytes_this_month','created'))
 		->setDataCallback('\Vidcache\Client\FS::fetchFoldersByParentDatatables',$root_path.$path,$show_hidden)
 		->setDataModel('\Vidcache\Client\DataModel\Folder')
 		->setupFromRequest()

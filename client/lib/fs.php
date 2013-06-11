@@ -37,7 +37,7 @@ abstract class FS {
 				$where_hidden = array('',array());
 		}
 		$sql =  ' SELECT SQL_CALC_FOUND_ROWS'
-				.' *'
+				.' *, "folder" AS `type`'
 				.' FROM `folders` '
 				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' `parent_folder_id` = ?'.$where_hidden[0]
 				.$order

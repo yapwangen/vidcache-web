@@ -22,11 +22,11 @@ class Folder extends \LSS\DataModel {
 		return \format_bytes($this->data['size']);
 	}
 
-	public function getHits(){
+	public function getHitsLifetime(){
 		return $this->data['hits_lifetime'];
 	}
 
-	public function getTransfer(){
+	public function getBytesThisMonth(){
 		return \format_bytes($this->data['bytes_this_month']);
 	}
 
