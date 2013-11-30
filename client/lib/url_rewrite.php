@@ -18,7 +18,7 @@ abstract class URLRewrite {
 				$arr['act'] = 'client';
 				$arr['do'] = 'legacy_uri';
 				$arr['uri'] = $uri;
-				break;	
+				break;
 
 			//new urls
 			case 'watch':
@@ -28,6 +28,12 @@ abstract class URLRewrite {
 				$arr['act'] = 'client';
 				$arr['do'] = 'file_view';
 				$arr['fire'] = mda_get($parts,0);
+				$arr['handle'] = mda_get($parts,1);
+				break;
+			//republish
+			case 'republish':
+				$arr['act'] = 'client';
+				$arr['do'] = 'republish';
 				$arr['handle'] = mda_get($parts,1);
 				break;
 			default:
