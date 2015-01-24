@@ -5,7 +5,6 @@ require_once(dirname(__DIR__).'/vendor/autoload.php');
 require_once('lss_boot.php');
 
 //import libs
-use \LSS\Config;
 use \LSS\Router;
 use \Vidcache\Client\URLRewrite;
 use \Vidcache\SDK;
@@ -19,7 +18,7 @@ __boot();
 
 //check for maintenance
 $vc = SDK::load();
-if($vc->maintenanceCheck(Config::get('vidcache','api_key'))){
+if($vc->maintenanceCheck()){
 	require(ROOT_GROUP.'/ctl/maintenance_home.php');
 	exit;
 }
