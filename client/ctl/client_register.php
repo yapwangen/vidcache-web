@@ -24,11 +24,7 @@ if(post('register')){
 		alert('Registration completed successfully!',true,true);
 		redirect(Url::login());
 	} catch(Exception $e){
-		if($e->getCode() == 23000){
-			alert('That email address already has an account',false);
-		} else {
-			alert($e->getMessage(),false);
-		}
+		alert($e->getMessage(),false);
 	}
 }
 

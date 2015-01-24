@@ -64,6 +64,7 @@ $(document).ready(function() {
 			,{"bSearchable": false}
 			,{"bSearchable": false}
 			,{"bSearchable": false}
+			,{"bSortable": false, "bSearchable": false}
 		]
 	} );
 } );
