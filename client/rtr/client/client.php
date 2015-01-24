@@ -15,6 +15,5 @@ Router::_get()->register('client',array(
 		Router::DEF		=>	'/ctl/client_file_view.php'
 	)
 	,'legacy_uri'		=>	'/ctl/client_legacy_uri.php'
-	,'republish'		=>	'/ctl/client_republish.php'
 	,Router::DEF		=>	'/ctl/client_home.php'
 ));
