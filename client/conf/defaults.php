@@ -25,6 +25,7 @@ $config['embed']['static_types'] = array(
 	,'image/jpeg'
 	,'image/png'
 	,'image/bmp'
+	,'image/gif'
 	,'text/plain'
 );
 $config['embed']['types'] = array_merge($config['embed']['audio_types'],$config['embed']['video_types']);

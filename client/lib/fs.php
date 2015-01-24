@@ -3,8 +3,6 @@ namespace Vidcache\Client;
 use \LSS\Config;
 use \LSS\Db;
 use \LSS\Url;
-use \Vidcache\SDK;
-use \Vidcache\ModelService;
 
 abstract class FS {
 
@@ -17,9 +15,7 @@ abstract class FS {
 
 	public static function fetchFileById($file_id){
 		return Db::_get()->fetch(
-			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
-			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
-			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
+			'SELECT f.* FROM `files` AS f'
 			.' WHERE f.file_id = ?'
 			,array($file_id)
 		);
@@ -27,24 +23,26 @@ abstract class FS {
 
 	public static function fetchFolderByPath($path){
 		return Db::_get()->fetch(
-			'SELECT * FROM `folders` WHERE `path` = ?'
-			,array($path)
+			'SELECT * FROM `folders` WHERE `path_hash` = ?'
+			,array(md5($path))
 		);
 	}
-	
-	public static function fetchFoldersByParentDataTables($columns,$where,$order,$limit,$path){
+
+	public static function fetchFoldersByParentDataTables($columns,$where,$order,$limit,$path,$show_hidden){
 		$folder = self::fetchFolderByPath(rtrim($path,'/'));
+		if(!$show_hidden){
+				$where_hidden[] = ' AND name NOT LIKE ?';
+				$where_hidden[] = array('.%');
+		} else {
+				$where_hidden = array('',array());
+		}
 		$sql =  ' SELECT SQL_CALC_FOUND_ROWS'
-<<<<<<< HEAD
 				.' *, "folder" AS `type`'
-=======
-				.' *,"--" AS `type`,"--" AS `size`, "--" AS `hits`, "--" AS `transfer`'
->>>>>>> parent of 6873fb9... updates for initial release needs modified back to generic
 				.' FROM `folders` '
-				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' `parent_folder_id` = ?'
+				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' `parent_folder_id` = ?'.$where_hidden[0]
 				.$order
 				.$limit;
-		$vars = array_merge($where[1],array($folder['folder_id']));
+		$vars = array_merge($where[1],array($folder['folder_id']),$where_hidden[1]);
 		$result = Db::_get()->fetchAll($sql,$vars);
 		// var_dump($result);
 		$count_result = Db::_get()->fetch('SELECT FOUND_ROWS() AS `row_count`');
@@ -55,17 +53,21 @@ abstract class FS {
 		return array($result,$count_result['row_count'],$count_total['row_count']);
 	}
 
-	public static function fetchFilesByParentDataTables($columns,$where,$order,$limit,$path){
+	public static function fetchFilesByParentDataTables($columns,$where,$order,$limit,$path,$show_hidden){
 		$folder = self::fetchFolderByPath(rtrim($path,'/'));
+		if(!$show_hidden){
+				$where_hidden[] = ' AND f.name NOT LIKE ?';
+				$where_hidden[] = array('.%');
+		} else {
+				$where_hidden = array('',array());
+		}
 		$sql =	 ' SELECT SQL_CALC_FOUND_ROWS'
-				.'	f.*,feh.handle as `embed_handle`, fh.handle as `file_handle`'
+				.'	f.*, f.handle AS `file_handle`'
 				.' FROM `files` AS f'
-				.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
-				.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
-				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' f.folder_id = ?'
+				.' '.(!empty($where[0]) ? $where[0].' AND ' : 'WHERE ').' f.folder_id = ?'.$where_hidden[0]
 				.$order
 				.$limit;
-		$vars = array_merge($where[1],array($folder['folder_id']));
+		$vars = array_merge($where[1],array($folder['folder_id']),$where_hidden[1]);
 		$result = Db::_get()->fetchAll($sql,$vars);
 		$count_result = Db::_get()->fetch('SELECT FOUND_ROWS() AS `row_count`');
 		$count_total = Db::_get()->fetch(
@@ -77,11 +79,9 @@ abstract class FS {
 
 	public static function fetchFileByPath($path){
 		return Db::_get()->fetch(
-			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
-			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
-			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
-			.' WHERE f.path = ?'
-			,array($path)
+			'SELECT f.* FROM `files` AS f'
+			.' WHERE f.path_hash = ?'
+			,array(md5($path))
 		);
 	}
 
@@ -96,9 +96,7 @@ abstract class FS {
 	public static function fetchFilesByParent($path){
 		$folder = self::fetchFolderByPath(rtrim($path,'/'));
 		return Db::_get()->fetchAll(
-			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
-			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
-			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
+			'SELECT f.* FROM `files` AS f'
 			.' WHERE f.folder_id = ?'
 			,array($folder['folder_id'])
 		);
@@ -106,175 +104,141 @@ abstract class FS {
 
 	public static function fetchFileByHandle($handle){
 		return Db::_get()->fetch(
-			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
-			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
-			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
-			.' WHERE fh.handle = ?'
+			'SELECT f.* FROM `files` AS f'
+			.' WHERE f.handle = ?'
 			,array($handle)
 		);
 	}
 
 	public static function fetchFileByHandleOrEmbedHandle($handle){
 		return Db::_get()->fetch(
-			'SELECT f.*,fh.handle,feh.handle as embed_handle FROM `files` AS f'
-			.' LEFT JOIN `file_handles` AS fh ON fh.path = f.path'
-			.' LEFT JOIN `file_embed_handles` AS feh ON feh.path = f.path'
-			.' WHERE fh.handle = ? or feh.handle = ?'
+			'SELECT f.* FROM `files` AS f'
+			.' WHERE f.handle = ? OR f.embed_handle = ?'
 			,array($handle,$handle)
 		);
 	}
 
-	public static function fetchSignature(){
+	public static function fetchFileMapByHash($hash){
 		return Db::_get()->fetch(
-			'SELECT * FROM `fs_signature` WHERE `vc_client_id` = ?'
-			,array(Config::get('vidcache','client_id'))
+			'SELECT * FROM `file_map` WHERE `hash` = ?'
+			,array($hash)
 		);
 	}
 
-	public static function updateSignature($sig){
-		return Db::_get()->insert(
-			'fs_signature'
-			,array(
-				 'vc_client_id'	=>	Config::get('vidcache','client_id')
-				,'sha1'			=>	$sig['sha1']
-				,'md5'			=>	$sig['md5']
-				,'updated'		=>	microtime(true)
-			)
-			,true	//update on duplicate
+	public static function fetchFileMapBySource($source,$id){
+		return Db::_get()->fetch(
+			'SELECT * FROM `file_map` WHERE `ext_source` = ? AND `ext_id` = ?'
+			,array($source,$id)
 		);
 	}
 
-	public static function updateCache($vc){
-		//get the current signature
-		$sig = $vc->FSSnapshot(true);
-		$our_sig = self::fetchSignature();
-		if($sig['sha1'] == $our_sig['sha1'])
-			return true; //no update needed
-		//now we need to download the updated cache
-		$snap = $vc->FSSnapshot();
-		return self::import($sig,$snap);
+	public static function countFilesByFolderPath($path){
+		return count(self::fetchFilesByParent($path));
 	}
 
-	public static function import($sig,$snap){
-		//takes a snapshot and imports it into the database
-		self::flush();
-		//forward to our recursive import function to do the import
-		self::_doImport($snap['fs']['snapshot']);
-		//update the signature
-		self::updateSignature($sig);
-		return true;
+	public static function fetchLastUpdateStamp(){
+		$files = Db::_get()->fetch('SELECT IFNULL(`updated`,0) AS `updated` FROM `files` ORDER BY `updated` DESC LIMIT 1');
+		$folders = Db::_get()->fetch('SELECT IFNULL(`updated`,0) AS `updated` FROM `folders` ORDER BY `updated` DESC LIMIT 1');
+		if($folders['updated'] > $files['updated']) return $folders['updated'];
+		return $files['updated'];
 	}
 
-	protected static function _doImport($arr){
-		if(isset($arr['folders']) && is_array($arr['folders']) && count($arr['folders'])){
-			foreach($arr['folders'] as $folder){
-				//create the folder
-				self::folderCreate($folder);
-				//recurse
-				self::_doImport($folder);
+	public static function folderUpdateByPath($path,$data=array()){
+		if(!isset($data['updated'])) $data['updated'] = time();
+		return Db::_get()->update('folders','path_hash',md5($path),$data);
+	}
+
+	public static function fileUpdateByPath($path,$data=array()){
+		if(!isset($data['updated'])) $data['updated'] = time();
+		return Db::_get()->update('files','path_hash',md5($path),$data);
+	}
+
+	//recursively create a folder tree from a path
+	public static function folderCreate($path){
+		//loop through the path and create folder entries as needed
+		$base_path = null;
+		foreach(explode('/',$path) as $part){
+			if(empty($part)) continue;
+			$base_path .= '/'.$part;
+			$folder = self::fetchFolderByPath($base_path);
+			if(!$folder){
+				$folder['folder_id'] = Db::_get()->insert('folders',array(
+					 'parent_folder_id'			=>	self::fetchFolderByPath(dirname($base_path))['folder_id']
+					,'path'						=>	$base_path
+					,'path_hash'				=>	md5($base_path)
+					,'name'						=>	basename($base_path)
+					,'created'					=>	time()
+				));
 			}
 		}
-		if(isset($arr['files']) && is_array($arr['files']) && count($arr['files'])){
-			foreach($arr['files'] as $file){
-				self::fileCreate($file);
-			}
-		}
-		return true;
+		//return the last one
+		if(isset($folder['folder_id']))
+			return $folder['folder_id'];
+		return null;
 	}
 
-	public static function folderCreate($folder){
-		return Db::_get()->insert(
-			'folders'
-			,array(
-				 'folder_id'		=>	$folder['client_folder_id']
-				,'parent_folder_id'	=>	$folder['parent_client_folder_id']
-				,'path'				=>	$folder['path']
-				,'name'				=>	$folder['name']
-				,'created'			=>	$folder['created']
-				,'updated'			=>	$folder['updated']
-				,'deleted'			=>	$folder['deleted']
-			)
-		);
+	public static function folderDeleteByPath($path){
+		if(self::countFilesByFolderPath($path) > 0)
+			throw new Exception('Cannot remove folder, files still exist within');
+		return Db::_get()->run('DELETE FROM `folders` WHERE `path_hash` = ?',array(md5($path)));
 	}
 
-	public static function fileCreate($file){
-		//create handle if we dont have done
-		self::fileCreateHandle($file);
-		//create the embed handle reference (we dont support multiples, so take the last one)
-		if(isset($file['embed']) && is_array($file['embed'])){
-			$handle = array_pop($file['embed']);
-			if(!is_null($handle))
-				self::fileStoreEmbedHandle($handle,$file['path']);
-		}
+	//takes two arguments
+	//	1) the copy path
+	//	2) the array from vc->pathInfo()['file']
+	public static function fileCreate($path,$file){
 		//create the file
-		return Db::_get()->insert(
+		$handle = self::fileCreateHandle($file['path']);
+		$file_id = Db::_get()->insert(
 			'files'
 			,array(
-				 'file_id'				=>	$file['client_file_id']
-				,'folder_id'			=>	$file['client_folder_id']
-				,'file_chksum'			=>	$file['file_chksum']
-				,'path'					=>	$file['path']
-				,'name'					=>	$file['name']
-				,'mime_type'			=>	$file['mime_type']
-				,'size'					=>	$file['size']
+				 'folder_id'			=>	self::folderCreate(dirname($path))
+				,'file_chksum'			=>	$file['chksum']
+				,'handle'				=>	$handle
+				,'path'					=>	$path
+				,'path_hash'			=>	md5($path)
+				,'name'					=>	basename($path)
+				,'mime_type'			=>	(!is_null($file['mime_type']) ? $file['mime_type'] : 'application/octet-data')
+				,'size'					=>	(!is_null($file['size']) ? $file['size'] : 0)
 				,'hits_this_month'		=>	$file['hits_this_month']
 				,'bytes_this_month'		=>	$file['bytes_this_month']
 				,'hits_lifetime'		=>	$file['hits_lifetime']
 				,'bytes_lifetime'		=>	$file['bytes_lifetime']
-				,'created'				=>	$file['created']
-				,'updated'				=>	$file['updated']
-				,'deleted'				=>	$file['deleted']
-		));
+				,'created'				=>	time()
+			)
+			,true
+		);
+		return array($file_id,$handle);
+	}
+
+	public static function fileDeleteByPath($path){
+		return Db::_get()->run('DELETE FROM `files` WHERE `path_hash` = ?',array(md5($path)));
 	}
 
 	public static function fileStoreEmbedHandle($handle,$path){
-		return Db::_get()->insert(
-			'file_embed_handles'
-			,array(
-				 'handle'		=>	$handle
-				,'path'			=>	$path
-			)
-			,true //update on duplicate
-		);
+		return Db::_get()->update('files','path_hash',md5($path),array('embed_handle'=>$handle));
 	}
 
-	public static function fileCreateHandle($file){
+	public static function fileCreateHandle($path){
 		//check handles until we get a unique one
+		$path_hash = md5($path);
 		do {
-			//check if we already have a handle for this path
-			$result = Db::_get()->fetch(
-				'SELECT * FROM `file_handles` WHERE `path` = ?'
-				,array($file['path'])
-			);
-			if(isset($result['handle'])) return $result['handle'];
 			//create a handle nad make sure its unique
 			$handle = gen_handle();
 			$result = Db::_get()->fetch(
-				'SELECT * FROM `file_handles` WHERE `handle` = ?'
+				'SELECT * FROM `files` WHERE `handle` = ?'
 				,array($handle)
 			);
 			//if we got not result that means its unique insert it
 			if(!$result) break;
 			//if we got a result and its the same path return that
-			if($result && $result['path'] == $file['path']) return $result['handle'];
+			if($result && $result['path_hash'] == $path_hash){
+				$handle = $result['handle'];
+				break;
+			}
 			//otherwise try again
 		} while(true);
-		//insert the new handle
-		Db::_get()->insert(
-			'file_handles'
-			,array(
-				 'handle'	=>	$handle
-				,'path'		=>	$file['path']
-			)
-		);
-		//send the handle back
 		return $handle;
-	}
-
-	public static function flush(){
-		Db::_get()->run('TRUNCATE TABLE `folders`');
-		Db::_get()->run('TRUNCATE TABLE `files`');
-		return true;
 	}
 
 	public static function actionType($mime_type){
@@ -320,4 +284,5 @@ abstract class FS {
 		$cluster_url .= '?client_file_id='.$file_id;
 		return $cluster_url;
 	}
+
 }
