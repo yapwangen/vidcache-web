@@ -1,9 +1,33 @@
 <tal:block metal:use-macro="structure.xhtml/page">
-	<tal:block metal:fill-slot="breadcrumb">
-		<a href="/" title="Home" class="tip-bottom"><i class="icon-home">&#160;</i> Home</a>
-		<a href="" class="current" tal:attributes="href url/profile">Profile</a>
-	</tal:block>
 	<tal:block metal:fill-slot="content">
-		<tal:block metal:use-macro="account_profile.xhtml/profile" />
+		<div class="hero-unit">
+			<h1>Your Profile</h1>
+			<p>Manage your account here</p>
+			<form tal:attributes="action url/client_profile" method="post" class="form-horizontal">
+				<input type="hidden" name="update" value="true" />
+				<div class="control-group">
+					<label class="control-label" for="email">Email Address</label>
+					<div class="controls">
+						<input type="text" name="email" id="email" placeholder="Email" tal:attributes="value email" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="password">Current Password</label>
+					<div class="controls">
+						<input type="password" name="current_password" id="password" placeholder="Password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="password">New Password</label>
+					<div class="controls">
+						<input type="password" name="new_password" id="password" placeholder="Password" />
+						<input type="password" name="new_confirm_password" placeholder="Confirm Password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<button type="submit" class="btn btn-primary">Update</button>
+				</div>
+			</form>
+		</div>
 	</tal:block>
 </tal:block>
