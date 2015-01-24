@@ -13,6 +13,9 @@ $vc->connect(Config::get('vidcache','api_key'));
 //get args
 $handle = get('handle');
 
+//check if we have a different signature cached for this client
+FS::updateCache($vc);
+
 $params = array();
 $params['file'] = $file = FS::fetchFileByHandleOrEmbedHandle($handle);
 // var_dump($file); exit;

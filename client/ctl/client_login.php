@@ -14,7 +14,7 @@ if(post('login')){
 		if(!bcrypt_check(post('password'),$client['password']))
 			throw new Exception('Password is invalid');
 		//generate token and setup session
-		$token = Session::tokenCreate($client['primary_contact_id'],server('REMOTE_ADDR'),server('HTTP_USER_AGENT'));
+		$token = Session::tokenCreate($client['client_id'],server('REMOTE_ADDR'),server('HTTP_USER_AGENT'));
 		Session::startSession($token);
 		//update last login
 		Client::updateLastLogin($client);

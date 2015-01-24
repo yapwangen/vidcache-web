@@ -40,4 +40,14 @@ class File extends \LSS\DataModel {
 		return \age($this->data['created']).' ago';
 	}
 
+	public function getActions(){
+		return '
+			<p class="text-right">
+				<a href="#" title="Manage"><i class="icon-wrench">&#160;</i></a>
+				<a href="#" title="Download"><i class="icon-download-alt">&#160;</i></a>
+				<a href="#" title="Rename"><i class="icon-remove">&#160;</i></a>
+			</p>
+		';
+	}
+
 }

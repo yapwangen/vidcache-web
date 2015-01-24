@@ -88,7 +88,7 @@
 					<div class="tab-pane fade active in" id="share-embed">
 						<div class="share-code">
 							<code>
-								&lt;a href=&quot;${file/url_view}&quot;&gt;&lt;img src=&quot;${file/url_server_static}&quot; alt=&quot;${file/name}&quot; /&gt;&lt;/a&gt;
+								&lt;a href=&quot;${file/url_view}&quot;&gt;&lt;img src=&quot;${file/url_view}&quot; alt=&quot;${file/name}&quot; /&gt;&lt;/a&gt;
 							</code>
 						</div>
 					</div>
@@ -100,40 +100,6 @@
 					<div class="tab-pane fade" id="share-url">
 						<code>
 							${file/url_view}
-						</code>
-					</div>
-				</div>
-			</div>
-		</tal:block>
-		<tal:block tal:condition="php: fire == 'download'">
-			<div>
-				<a tal:attributes="href file/url_server_download; title file/name" class="btn btn-primary">
-					<i class="icon-white icon-download">&#160;</i> Download
-				</a>
-			</div>
-			<h5>Share</h5>
-			<div class="tabbable share">
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#share-embed" data-toggle="tab">Embed</a></li>
-					<li><a href="#share-link" data-toggle="tab">Link</a></li>
-					<li><a href="#share-url" data-toggle="tab">URL</a></li>
-				</ul>
-				<div class="tab-content share">
-					<div class="tab-pane fade active in" id="share-embed">
-						<div class="share-code">
-							<code>
-								&lt;a href=&quot;${file/url_download}&quot;&gt;${file/name}/a&gt;
-							</code>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="share-link">
-						<code>
-							&lt;a href=&quot;${file/url_download}&quot;&gt;${file/name}&lt;/a&gt;
-						</code>
-					</div>
-					<div class="tab-pane fade" id="share-url">
-						<code>
-							${file/url_download}
 						</code>
 					</div>
 				</div>
